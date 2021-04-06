@@ -6,9 +6,11 @@
 //
 
 import SceneKit
+import Combine
 
 public struct Sphere: ARObject {
-    public init() { }
+    public var subject = PassthroughSubject<UUID, Never>()
+    
     public var object: ARObject { self }
     
     public var id = UUID()
@@ -19,7 +21,7 @@ public struct Sphere: ARObject {
 }
 
 extension Sphere {
-    public var scnNode: SCNNode {
+    public func renderScnNode() -> SCNNode {
         let node = SCNNode(geometry: SCNSphere(radius: radius))
         if let color = color {
             node.geometry?.firstMaterial?.diffuse.contents = UIColor(color)

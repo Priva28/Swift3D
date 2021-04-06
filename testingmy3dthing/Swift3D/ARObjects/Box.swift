@@ -6,8 +6,11 @@
 //
 
 import SceneKit
+import Combine
 
 public struct Box: ARObject {
+    public var subject = PassthroughSubject<UUID, Never>()
+    
     public var object: ARObject { self }
     
     public var id = UUID()
@@ -22,7 +25,7 @@ public struct Box: ARObject {
 }
 
 extension Box {
-    public var scnNode: SCNNode {
+    public func renderScnNode() -> SCNNode {
         let node = SCNNode(geometry: SCNBox(width: size.width, height: size.height, length: size.length, chamferRadius: chamferRadius))
         if let color = color {
             node.geometry?.firstMaterial?.diffuse.contents = UIColor(color)

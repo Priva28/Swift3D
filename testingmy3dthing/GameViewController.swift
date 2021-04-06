@@ -67,6 +67,11 @@ class GameViewController: UIViewController {
         
         let something = SomeARScene()
         scene.rootNode.addChildNode(something.scnNode)
+        let subscriber = something.subject.sink { _ in
+            print("here")
+            scene.rootNode.childNode(withName: "test", recursively: true)!.removeFromParentNode()
+            scene.rootNode.addChildNode(something.scnNode)
+        }
     }
     
     @objc

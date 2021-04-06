@@ -6,46 +6,44 @@
 //
 
 import SceneKit
+import Combine
 
-public protocol ARObject: ARObjectSupportedAttributes {
-    init()
+public protocol ARObject: ARObjectSupportedAttributes, ARObjectGroup {
     var object: ARObject { get }
     var scnNode: SCNNode { get }
     var id: UUID { get }
+    var subject: PassthroughSubject<UUID, Never> { get }
+    func renderScnNode() -> SCNNode
 }
 
-public class ARNode {
-    public init(object: ARObject) {
-        self.object = object
-        self.scnNode = object.scnNode
+extension ARObject {
+    public var objects: [ARObject] { [self] }
+}
+
+extension ARObject {
+    public var scnNode: SCNNode {
+        return renderScnNode()
     }
-    var object: ARObject
-    var scnNode: SCNNode
-    func didSet() {
-        self.scnNode = setScnNode()
-    }
-    func setScnNode() -> SCNNode {
-        return object.scnNode
+    public func renderScnNode() -> SCNNode {
+        bindProperties()
+//        _ = object.subject.sink { sentID in
+//            subject.send(sentID)
+//        }
+        let node = object.renderScnNode()
+        node.name = "test"
+        return node
     }
 }
 
 extension ARObject {
-    public var scnNode: SCNNode { scnNodeManager.scnNode }
-    public var scnNodeManager: ARNode { ARNode(object: self) }
-    public func renderScnNode() -> SCNNode { object.scnNode }
-}
-
-extension ARObject {
-    init() {
-        self.init()
-        bindProperties(scnNodeManager.didSet)
-    }
-    func bindProperties(_ didSet: @escaping () -> Void) {
+    func bindProperties(_ toSelf: Bool = false) {
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
             if var child = child.value as? ARDynamicProperty {
-                child.update = didSet
+                child.id = id
+                child.subject = subject
             }
         }
     }
 }
+

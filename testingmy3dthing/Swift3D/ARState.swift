@@ -5,7 +5,10 @@
 //  Created by Christian Privitelli on 4/4/21.
 //
 
-@propertyWrapper public struct CustomState<Value>: ARDynamicProperty {
+import Foundation
+import Combine
+
+@propertyWrapper public class CustomState<Value>: ARDynamicProperty {
     
     /// Set the initial default value.
     public init(wrappedValue value: Value) {
@@ -18,13 +21,16 @@
         get { self.storage.internalValue! }
         
         /// When a user changes the wrappedValue, it will change the internalValue meaning that with @CustomState, they can mutate and access a value without storing it in the struct/classes self.
-        nonmutating set {
+        set {
             self.storage.internalValue = newValue
-            self.update()
+            if subject != nil && id != nil {
+                subject!.send(id!)
+            }
         }
     }
     
-    public var update: () -> Void = {}
+    public var subject: PassthroughSubject<UUID, Never>?
+    public var id: UUID?
     
     private var storage = InternalStorage()
     

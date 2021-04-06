@@ -7,8 +7,10 @@
 
 import SwiftUI
 import SceneKit
+import Combine
 
 public struct Stack: ARObject {
+    public var subject = PassthroughSubject<UUID, Never>()
     public var object: ARObject { self }
     public var id = UUID()
     public var attributes = ARObjectAttributes()
@@ -16,8 +18,6 @@ public struct Stack: ARObject {
     public var content: [ARObject]
     public var xyz: XYZ
     public var spacing: Float?
-    
-    
     
     public init(_ xyz: XYZ, spacing: Float? = nil, @ARObjectBuilder content: () -> [ARObject]) {
         self.xyz = xyz
@@ -61,7 +61,7 @@ extension Stack {
 }
 
 extension Stack {
-    public var scnNode: SCNNode {
+    public func renderScnNode() -> SCNNode {
         let node = stackToNode(xyz: xyz, content: content, spacing: spacing, color: color)
         let offset = offset ?? .zero
         node.transform = SCNMatrix4MakeTranslation(offset.x, offset.y, offset.z)

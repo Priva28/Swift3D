@@ -5,20 +5,25 @@
 //  Created by Christian Privitelli on 4/4/21.
 //
 
+public protocol ARObjectGroup {
+    var objects: [ARObject] { get }
+}
+
+extension Array: ARObjectGroup where Element == ARObject {
+    public var objects: [ARObject] { self }
+}
+
 @resultBuilder public struct ARObjectBuilder {
-    public static func buildBlock() -> [ARObject] {
-        return []
+    public static func buildBlock(_ objects: ARObjectGroup...) -> [ARObject] {
+        return objects.flatMap { $0.objects }
     }
-    public static func buildBlock(_ object: ARObject...) -> [ARObject] {
-        return object
+    public static func buildOptional(_ object: [ARObjectGroup]?) -> [ARObject] {
+        return object?.flatMap { $0.objects } ?? []
     }
-    public static func buildIf(_ object: ARObject?) -> [ARObject] {
-        return object == nil ? [] : [object!]
+    public static func buildEither(first object: [ARObjectGroup]) -> [ARObject] {
+        return object.flatMap { $0.objects }
     }
-    public static func buildEither(first object: ARObject) -> [ARObject] {
-        return [object]
-    }
-    public static func buildEither(second object: ARObject) -> [ARObject] {
-        return [object]
+    public static func buildEither(second object: [ARObjectGroup]) -> [ARObject] {
+        return object.flatMap { $0.objects }
     }
 }

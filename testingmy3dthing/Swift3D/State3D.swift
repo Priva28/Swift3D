@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-@propertyWrapper public class CustomState<Value>: ARDynamicProperty {
+@propertyWrapper public class State3D<Value>: DynamicProperty3D {
     
     /// Set the initial default value.
     public init(wrappedValue value: Value) {

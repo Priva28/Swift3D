@@ -7,25 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		309EAAC02620B9C9009972FE /* Pyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAABF2620B9C9009972FE /* Pyramid.swift */; };
+		309EAAC22621E7AE009972FE /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAC12621E7AE009972FE /* Scene.swift */; };
 		AA7CB25926171686002C0A35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB25826171686002C0A35 /* AppDelegate.swift */; };
 		AA7CB25B26171686002C0A35 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = AA7CB25A26171686002C0A35 /* art.scnassets */; };
 		AA7CB25D26171686002C0A35 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB25C26171686002C0A35 /* GameViewController.swift */; };
 		AA7CB26026171686002C0A35 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA7CB25E26171686002C0A35 /* Main.storyboard */; };
 		AA7CB26226171689002C0A35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA7CB26126171689002C0A35 /* Assets.xcassets */; };
-		AA7CB28826198E57002C0A35 /* ARObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28726198E57002C0A35 /* ARObject.swift */; };
-		AA7CB28A26198EA0002C0A35 /* ARObjectAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28926198EA0002C0A35 /* ARObjectAttributes.swift */; };
-		AA7CB28C26198F2D002C0A35 /* ARDynamicProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28B26198F2D002C0A35 /* ARDynamicProperty.swift */; };
-		AA7CB28E26198FF6002C0A35 /* ARHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28D26198FF6002C0A35 /* ARHelpers.swift */; };
-		AA7CB2902619903A002C0A35 /* ARObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28F2619903A002C0A35 /* ARObjectBuilder.swift */; };
+		AA7CB28826198E57002C0A35 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28726198E57002C0A35 /* Object.swift */; };
+		AA7CB28A26198EA0002C0A35 /* ObjectAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28926198EA0002C0A35 /* ObjectAttributes.swift */; };
+		AA7CB28C26198F2D002C0A35 /* DynamicProperty3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28B26198F2D002C0A35 /* DynamicProperty3D.swift */; };
+		AA7CB28E26198FF6002C0A35 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28D26198FF6002C0A35 /* Helpers.swift */; };
+		AA7CB2902619903A002C0A35 /* ObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB28F2619903A002C0A35 /* ObjectBuilder.swift */; };
 		AA7CB29326199075002C0A35 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29226199075002C0A35 /* Box.swift */; };
 		AA7CB29526199086002C0A35 /* Sphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29426199086002C0A35 /* Sphere.swift */; };
 		AA7CB2972619909B002C0A35 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB2962619909B002C0A35 /* Stack.swift */; };
-		AA7CB29926199225002C0A35 /* ARState.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29826199225002C0A35 /* ARState.swift */; };
+		AA7CB29926199225002C0A35 /* State3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29826199225002C0A35 /* State3D.swift */; };
 		AA7CB29B26199259002C0A35 /* SomeARScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29A26199259002C0A35 /* SomeARScene.swift */; };
 		AA7CB29D26199559002C0A35 /* EmptyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA7CB29C26199559002C0A35 /* EmptyObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		309EAABF2620B9C9009972FE /* Pyramid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pyramid.swift; sourceTree = "<group>"; };
+		309EAAC12621E7AE009972FE /* Scene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		AA7CB25526171686002C0A35 /* testingmy3dthing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testingmy3dthing.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA7CB25826171686002C0A35 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AA7CB25A26171686002C0A35 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -33,15 +37,15 @@
 		AA7CB25F26171686002C0A35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AA7CB26126171689002C0A35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AA7CB26326171689002C0A35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AA7CB28726198E57002C0A35 /* ARObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARObject.swift; sourceTree = "<group>"; };
-		AA7CB28926198EA0002C0A35 /* ARObjectAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARObjectAttributes.swift; sourceTree = "<group>"; };
-		AA7CB28B26198F2D002C0A35 /* ARDynamicProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARDynamicProperty.swift; sourceTree = "<group>"; };
-		AA7CB28D26198FF6002C0A35 /* ARHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARHelpers.swift; sourceTree = "<group>"; };
-		AA7CB28F2619903A002C0A35 /* ARObjectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARObjectBuilder.swift; sourceTree = "<group>"; };
+		AA7CB28726198E57002C0A35 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		AA7CB28926198EA0002C0A35 /* ObjectAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectAttributes.swift; sourceTree = "<group>"; };
+		AA7CB28B26198F2D002C0A35 /* DynamicProperty3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicProperty3D.swift; sourceTree = "<group>"; };
+		AA7CB28D26198FF6002C0A35 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		AA7CB28F2619903A002C0A35 /* ObjectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectBuilder.swift; sourceTree = "<group>"; };
 		AA7CB29226199075002C0A35 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		AA7CB29426199086002C0A35 /* Sphere.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sphere.swift; sourceTree = "<group>"; };
 		AA7CB2962619909B002C0A35 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
-		AA7CB29826199225002C0A35 /* ARState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARState.swift; sourceTree = "<group>"; };
+		AA7CB29826199225002C0A35 /* State3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State3D.swift; sourceTree = "<group>"; };
 		AA7CB29A26199259002C0A35 /* SomeARScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SomeARScene.swift; sourceTree = "<group>"; };
 		AA7CB29C26199559002C0A35 /* EmptyObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,13 +95,14 @@
 			isa = PBXGroup;
 			children = (
 				AA7CB29126199064002C0A35 /* ARObjects */,
-				AA7CB28726198E57002C0A35 /* ARObject.swift */,
-				AA7CB28926198EA0002C0A35 /* ARObjectAttributes.swift */,
-				AA7CB28B26198F2D002C0A35 /* ARDynamicProperty.swift */,
-				AA7CB28D26198FF6002C0A35 /* ARHelpers.swift */,
-				AA7CB28F2619903A002C0A35 /* ARObjectBuilder.swift */,
-				AA7CB29826199225002C0A35 /* ARState.swift */,
+				AA7CB28726198E57002C0A35 /* Object.swift */,
+				AA7CB28926198EA0002C0A35 /* ObjectAttributes.swift */,
+				AA7CB28B26198F2D002C0A35 /* DynamicProperty3D.swift */,
+				AA7CB28D26198FF6002C0A35 /* Helpers.swift */,
+				AA7CB28F2619903A002C0A35 /* ObjectBuilder.swift */,
+				AA7CB29826199225002C0A35 /* State3D.swift */,
 				AA7CB29A26199259002C0A35 /* SomeARScene.swift */,
+				309EAAC12621E7AE009972FE /* Scene.swift */,
 			);
 			path = Swift3D;
 			sourceTree = "<group>";
@@ -107,6 +112,7 @@
 			children = (
 				AA7CB29226199075002C0A35 /* Box.swift */,
 				AA7CB29426199086002C0A35 /* Sphere.swift */,
+				309EAABF2620B9C9009972FE /* Pyramid.swift */,
 				AA7CB2962619909B002C0A35 /* Stack.swift */,
 				AA7CB29C26199559002C0A35 /* EmptyObject.swift */,
 			);
@@ -185,17 +191,19 @@
 			files = (
 				AA7CB2972619909B002C0A35 /* Stack.swift in Sources */,
 				AA7CB29B26199259002C0A35 /* SomeARScene.swift in Sources */,
+				309EAAC22621E7AE009972FE /* Scene.swift in Sources */,
 				AA7CB29526199086002C0A35 /* Sphere.swift in Sources */,
 				AA7CB29326199075002C0A35 /* Box.swift in Sources */,
 				AA7CB25D26171686002C0A35 /* GameViewController.swift in Sources */,
-				AA7CB2902619903A002C0A35 /* ARObjectBuilder.swift in Sources */,
-				AA7CB28E26198FF6002C0A35 /* ARHelpers.swift in Sources */,
-				AA7CB28C26198F2D002C0A35 /* ARDynamicProperty.swift in Sources */,
+				AA7CB2902619903A002C0A35 /* ObjectBuilder.swift in Sources */,
+				309EAAC02620B9C9009972FE /* Pyramid.swift in Sources */,
+				AA7CB28E26198FF6002C0A35 /* Helpers.swift in Sources */,
+				AA7CB28C26198F2D002C0A35 /* DynamicProperty3D.swift in Sources */,
 				AA7CB25926171686002C0A35 /* AppDelegate.swift in Sources */,
 				AA7CB29D26199559002C0A35 /* EmptyObject.swift in Sources */,
-				AA7CB29926199225002C0A35 /* ARState.swift in Sources */,
-				AA7CB28826198E57002C0A35 /* ARObject.swift in Sources */,
-				AA7CB28A26198EA0002C0A35 /* ARObjectAttributes.swift in Sources */,
+				AA7CB29926199225002C0A35 /* State3D.swift in Sources */,
+				AA7CB28826198E57002C0A35 /* Object.swift in Sources */,
+				AA7CB28A26198EA0002C0A35 /* ObjectAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,65 @@
+//
+//  ObjectAttributes.swift
+//  testingmy3dthing
+//
+//  Created by Christian Privitelli on 4/4/21.
+//
+
+import SwiftUI
+
+public struct ObjectAttributes {
+    public var color: Color? = nil
+    public var offset: Location3D? = nil
+}
+
+public protocol ObjectSupportedAttributes {
+    var attributes: ObjectAttributes { get set }
+}
+
+extension ObjectSupportedAttributes {
+    public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
+}
+
+extension Object {
+    public var color: Color? {
+        get {
+            return attributes.color
+        }
+        set {
+            attributes.color = newValue
+        }
+    }
+    public func color(_ color: Color) -> some Object {
+        var me = self
+        me.attributes.color = color
+        return me
+    }
+}
+
+extension Object {
+    public var offset: Location3D? {
+        get {
+            return attributes.offset
+        }
+        set {
+            attributes.offset = newValue
+        }
+    }
+    public func offset(_ offset: Location3D) -> some Object {
+        var me = self
+        me.offset = offset
+        return me
+    }
+    public func offset(x: Float = 0, y: Float = 0, z: Float = 0) -> some Object {
+        var me = self
+        me.offset = Location3D(x: x, y: y, z: z)
+        return me
+    }
+}
+
+extension Object {
+    public func onAppear(_ closure: () -> Void) -> some Object {
+        closure()
+        return self
+    }
+}

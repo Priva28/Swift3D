@@ -9,12 +9,12 @@ import SwiftUI
 import SceneKit
 import Combine
 
-struct SomeARScene: ARObject {
+struct SomeARScene: Object {
     
-    @CustomState var test: Int = 5
+    @State3D var test: Int = 5
     public var subject = PassthroughSubject<UUID, Never>()
     
-    var object: ARObject {
+    var object: Object {
         Stack(.y) {
             AR4()
             Sphere(radius: 1)
@@ -22,14 +22,15 @@ struct SomeARScene: ARObject {
             Stack(.z) {
                 Sphere(radius: 1)
                     .color(.yellow)
-                Box(size: ARSize(width: 3, height: 2, length: 3), chamferRadius: 0.1)
+                Box(size: Size3D(width: 3, height: 2, length: 3), chamferRadius: 0.1)
+                    .chamferRadius(20)
                     .color(.yellow)
                     .offset(z: test == 5 ? -2 : -5)
             }
             Stack(.x, spacing: 1) {
-                Box(size: ARSize(width: 1, height: 2, length: 2))
+                Box(size: Size3D(width: 1, height: 2, length: 2))
                 Sphere(radius: 1.3)
-                Box(size: ARSize(width: 2, height: 2, length: 2))
+                Box(size: Size3D(width: 2, height: 2, length: 2))
                 Sphere(radius: 1.3)
                 Sphere(radius: 1.3)
                     .color(.blue)
@@ -47,13 +48,19 @@ struct SomeARScene: ARObject {
     }
     
     var id: UUID = UUID()
-    var attributes = ARObjectAttributes()
+    var attributes = ObjectAttributes()
     
 }
 
-struct AR4: ARObject {
-    @CustomState var test: Int = 5
-    var object: ARObject {
+struct First: Object {
+    var object: Object {
+        Box()
+    }
+}
+
+struct AR4: Object {
+    @State3D var test: Int = 5
+    var object: Object {
         if test == 5 {
             return Sphere(radius: 1)
                 .color(.green)
@@ -70,6 +77,6 @@ struct AR4: ARObject {
     }
     
     var id: UUID = UUID()
-    var attributes = ARObjectAttributes()
+    var attributes = ObjectAttributes()
     public var subject = PassthroughSubject<UUID, Never>()
 }

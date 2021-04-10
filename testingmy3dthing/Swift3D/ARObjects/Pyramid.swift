@@ -8,7 +8,7 @@
 import SceneKit
 import Combine
 
-public struct Sphere: Object {
+public struct Pyramid: Object {
     public var subject = PassthroughSubject<UUID, Never>()
     
     public var object: Object { self }
@@ -16,13 +16,13 @@ public struct Sphere: Object {
     public var id = UUID()
     public var attributes = ObjectAttributes()
     
-    public let radius: CGFloat
-    public init(radius: CGFloat) { self.radius = radius }
+    public let size: Size3D
+    public init(size: Size3D) { self.size = size }
 }
 
-extension Sphere {
+extension Pyramid {
     public func renderScnNode() -> SCNNode {
-        var node = SCNNode(geometry: SCNSphere(radius: radius))
+        var node = SCNNode(geometry: SCNPyramid(width: size.width, height: size.height, length: size.length))
         applyAttributes(to: &node)
         return node
     }

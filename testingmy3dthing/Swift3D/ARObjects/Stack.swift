@@ -9,17 +9,17 @@ import SwiftUI
 import SceneKit
 import Combine
 
-public struct Stack: ARObject {
+public struct Stack: Object {
     public var subject = PassthroughSubject<UUID, Never>()
-    public var object: ARObject { self }
+    public var object: Object { self }
     public var id = UUID()
-    public var attributes = ARObjectAttributes()
+    public var attributes = ObjectAttributes()
     
-    public var content: [ARObject]
+    public var content: [Object]
     public var xyz: XYZ
     public var spacing: Float?
     
-    public init(_ xyz: XYZ, spacing: Float? = nil, @ARObjectBuilder content: () -> [ARObject]) {
+    public init(_ xyz: XYZ, spacing: Float? = nil, @ObjectBuilder content: () -> [Object]) {
         self.xyz = xyz
         self.spacing = spacing
         self.content = content()
@@ -27,7 +27,7 @@ public struct Stack: ARObject {
 }
 
 extension Stack {
-    func stackToNode(xyz: XYZ, content: [ARObject], spacing: Float?, color: Color?) -> SCNNode {
+    func stackToNode(xyz: XYZ, content: [Object], spacing: Float?, color: Color?) -> SCNNode {
         guard let firstInContent = content.first else { return SCNNode() }
         let parentNode = firstInContent.scnNode
         if firstInContent.color == nil {
@@ -62,9 +62,8 @@ extension Stack {
 
 extension Stack {
     public func renderScnNode() -> SCNNode {
-        let node = stackToNode(xyz: xyz, content: content, spacing: spacing, color: color)
-        let offset = offset ?? .zero
-        node.transform = SCNMatrix4MakeTranslation(offset.x, offset.y, offset.z)
+        var node = stackToNode(xyz: xyz, content: content, spacing: spacing, color: color)
+        applyAttributes(to: &node)
         return node
     }
 }

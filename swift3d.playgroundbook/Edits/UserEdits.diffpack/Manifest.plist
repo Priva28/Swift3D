@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BaseVersion</key>
+	<string>1.0</string>
+	<key>DiffPackType</key>
+	<string>UserEdit</string>
+	<key>DocumentType</key>
+	<string>PlaygroundBook</string>
+	<key>Name</key>
+	<string>com.apple.playgrounds.blank</string>
+	<key>UpdateVersion</key>
+	<string>1.0</string>
+	<key>Updates</key>
+	<dict>
+		<key>Added</key>
+		<array>
+			<dict>
+				<key>File</key>
+				<string>Chapters/Chapter1.playgroundchapter/UserManifest.plist</string>
+			</dict>
+			<dict>
+				<key>File</key>
+				<string>UserModules/Page1.playgroundmodule/Sources/Untitled.swift</string>
+			</dict>
+		</array>
+		<key>Modified</key>
+		<array/>
+		<key>Removed</key>
+		<array/>
+		<key>Replaced</key>
+		<array/>
+	</dict>
+</dict>
+</plist>

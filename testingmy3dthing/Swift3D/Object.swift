@@ -1,5 +1,5 @@
 //
-//  ARObject.swift
+//  Object.swift
 //  testingmy3dthing
 //
 //  Created by Christian Privitelli on 4/4/21.
@@ -8,19 +8,21 @@
 import SceneKit
 import Combine
 
-public protocol ARObject: ARObjectSupportedAttributes, ARObjectGroup {
-    var object: ARObject { get }
+public protocol Object: ObjectSupportedAttributes, ObjectGroup {
+    var object: Object { get }
     var scnNode: SCNNode { get }
     var id: UUID { get }
     var subject: PassthroughSubject<UUID, Never> { get }
     func renderScnNode() -> SCNNode
 }
 
-extension ARObject {
-    public var objects: [ARObject] { [self] }
+extension Object {
+    public var objects: [Object] { [self] }
+    public var id: UUID { UUID() }
+    public var subject: PassthroughSubject<UUID, Never> { PassthroughSubject<UUID, Never>() }
 }
 
-extension ARObject {
+extension Object {
     public var scnNode: SCNNode {
         return renderScnNode()
     }
@@ -33,13 +35,21 @@ extension ARObject {
         node.name = "test"
         return node
     }
+    public func applyAttributes(to node: inout SCNNode) {
+        if let color = color {
+            node.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
+        }
+        
+        let offset = self.offset ?? .zero
+        node.transform = SCNMatrix4MakeTranslation(offset.x, offset.y, offset.z)
+    }
 }
 
-extension ARObject {
+extension Object {
     func bindProperties(_ toSelf: Bool = false) {
         let mirror = Mirror(reflecting: self)
         for child in mirror.children {
-            if var child = child.value as? ARDynamicProperty {
+            if var child = child.value as? DynamicProperty3D {
                 child.id = id
                 child.subject = subject
             }

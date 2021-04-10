@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-public protocol ARDynamicProperty {
+public protocol DynamicProperty3D {
     var id: UUID? { get set }
     var subject: PassthroughSubject<UUID, Never>? { get set }
 }

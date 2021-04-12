@@ -10,6 +10,8 @@ import SwiftUI
 public struct ObjectAttributes {
     public var color: Color? = nil
     public var offset: Location3D? = nil
+    public var opacity: CGFloat? = nil
+    public var onAppear: (() -> Void)? = nil
 }
 
 public protocol ObjectSupportedAttributes {
@@ -17,7 +19,7 @@ public protocol ObjectSupportedAttributes {
 }
 
 extension ObjectSupportedAttributes {
-    public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
+    //public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
 }
 
 extension Object {
@@ -58,8 +60,33 @@ extension Object {
 }
 
 extension Object {
-    public func onAppear(_ closure: () -> Void) -> some Object {
-        closure()
-        return self
+    public var opacity: CGFloat? {
+        get {
+            return attributes.opacity
+        }
+        set {
+            attributes.opacity = newValue
+        }
+    }
+    public func opacity(_ opacity: CGFloat) -> some Object {
+        var me = self
+        me.opacity = opacity
+        return me
+    }
+}
+
+extension Object {
+    public var onAppear: (() -> Void)? {
+        get {
+            return attributes.onAppear
+        }
+        set {
+            attributes.onAppear = newValue
+        }
+    }
+    public func onAppear(_ closure: @escaping () -> Void) -> some Object {
+        var me = self
+        me.onAppear = closure
+        return me
     }
 }

@@ -9,6 +9,5 @@ import Combine
 import Foundation
 
 public protocol DynamicProperty3D {
-    var id: UUID? { get set }
-    var subject: PassthroughSubject<UUID, Never>? { get set }
+    var update: () -> Void { get set }
 }

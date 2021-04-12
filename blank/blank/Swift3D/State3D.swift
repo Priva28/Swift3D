@@ -23,14 +23,11 @@ import Combine
         /// When a user changes the wrappedValue, it will change the internalValue meaning that with @CustomState, they can mutate and access a value without storing it in the struct/classes self.
         set {
             self.storage.internalValue = newValue
-            if subject != nil && id != nil {
-                subject!.send(id!)
-            }
+            self.update()
         }
     }
     
-    public var subject: PassthroughSubject<UUID, Never>?
-    public var id: UUID?
+    public var update: () -> Void = { }
     
     private var storage = InternalStorage()
     

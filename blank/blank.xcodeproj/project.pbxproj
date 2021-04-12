@@ -14,7 +14,6 @@
 		309EAAEB2621EB4A009972FE /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAADE2621EB49009972FE /* Scene.swift */; };
 		309EAAEC2621EB4A009972FE /* Pyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAADF2621EB49009972FE /* Pyramid.swift */; };
 		309EAAED2621EB4A009972FE /* ObjectAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE02621EB49009972FE /* ObjectAttributes.swift */; };
-		309EAAEE2621EB4A009972FE /* SomeARScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE12621EB49009972FE /* SomeARScene.swift */; };
 		309EAAEF2621EB4A009972FE /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE22621EB4A009972FE /* Box.swift */; };
 		309EAAF02621EB4A009972FE /* DynamicProperty3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE32621EB4A009972FE /* DynamicProperty3D.swift */; };
 		309EAAF12621EB4A009972FE /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE42621EB4A009972FE /* Object.swift */; };
@@ -36,7 +35,6 @@
 		309EAADE2621EB49009972FE /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		309EAADF2621EB49009972FE /* Pyramid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pyramid.swift; sourceTree = "<group>"; };
 		309EAAE02621EB49009972FE /* ObjectAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectAttributes.swift; sourceTree = "<group>"; };
-		309EAAE12621EB49009972FE /* SomeARScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SomeARScene.swift; sourceTree = "<group>"; };
 		309EAAE22621EB4A009972FE /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		309EAAE32621EB4A009972FE /* DynamicProperty3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DynamicProperty3D.swift; sourceTree = "<group>"; };
 		309EAAE42621EB4A009972FE /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				309EAAE92621EB4A009972FE /* ObjectBuilder.swift */,
 				309EAADF2621EB49009972FE /* Pyramid.swift */,
 				309EAADE2621EB49009972FE /* Scene.swift */,
-				309EAAE12621EB49009972FE /* SomeARScene.swift */,
 				309EAAE82621EB4A009972FE /* Sphere.swift */,
 				309EAAE72621EB4A009972FE /* Stack.swift */,
 				309EAAE52621EB4A009972FE /* State3D.swift */,
@@ -190,7 +187,6 @@
 				309EAAF22621EB4A009972FE /* State3D.swift in Sources */,
 				309EAAD22621EB2A009972FE /* ContentView.swift in Sources */,
 				309EAAEF2621EB4A009972FE /* Box.swift in Sources */,
-				309EAAEE2621EB4A009972FE /* SomeARScene.swift in Sources */,
 				309EAAF42621EB4B009972FE /* Stack.swift in Sources */,
 				309EAAF32621EB4A009972FE /* Helpers.swift in Sources */,
 				309EAAF02621EB4A009972FE /* DynamicProperty3D.swift in Sources */,

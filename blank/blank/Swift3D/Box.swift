@@ -9,8 +9,6 @@ import SceneKit
 import Combine
 
 public struct Box: Object {
-    public var subject = PassthroughSubject<UUID, Never>()
-    
     public var object: Object { self }
     
     public var id = UUID()
@@ -25,10 +23,10 @@ public struct Box: Object {
 }
 
 extension Box {
-    public func renderScnNode() -> SCNNode {
+    public func renderScnNode() -> (SCNNode, [Attributes]) {
         var node = SCNNode(geometry: SCNBox(width: size.width, height: size.height, length: size.length, chamferRadius: chamferRadius))
-        applyAttributes(to: &node)
-        return node
+        let changedAttributes = applyAttributes(to: &node)
+        return (node, changedAttributes)
     }
 }
 

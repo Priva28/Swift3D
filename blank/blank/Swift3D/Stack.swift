@@ -61,10 +61,10 @@ extension Stack {
 }
 
 extension Stack {
-    public func renderScnNode() -> SCNNode {
+    public func renderScnNode() -> (SCNNode, [Attributes]) {
         var node = stackToNode(xyz: xyz, content: content, spacing: spacing, color: color)
-        applyAttributes(to: &node)
-        return node
+        let changedAttributes = applyAttributes(to: &node)
+        return (node, changedAttributes)
     }
 }
 

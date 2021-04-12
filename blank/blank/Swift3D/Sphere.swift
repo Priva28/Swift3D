@@ -21,9 +21,9 @@ public struct Sphere: Object {
 }
 
 extension Sphere {
-    public func renderScnNode() -> SCNNode {
+    public func renderScnNode() -> (SCNNode, [Attributes]) {
         var node = SCNNode(geometry: SCNSphere(radius: radius))
-        applyAttributes(to: &node)
-        return node
+        let changedAttributes = applyAttributes(to: &node)
+        return (node, changedAttributes)
     }
 }

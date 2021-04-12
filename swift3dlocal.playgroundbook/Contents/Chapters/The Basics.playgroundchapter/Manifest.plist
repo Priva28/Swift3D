@@ -2,14 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>TemplatePageFilename</key>
-	<string>Template.playgroundpage</string>
 	<key>Name</key>
-	<string>Swift3D</string>
-	<key>InitialUserPages</key>
+	<string>The Basics</string>
+	<key>Pages</key>
 	<array>
-		<string>Introduction.playgroundpage</string>
-		<string>The Basics.playgroundpage</string>
+		<string>1MyFirstObject.playgroundpage</string>
+		<string>2Modifiers.playgroundpage</string>
+		<string>3Stacks.playgroundpage</string>
 	</array>
 </dict>
 </plist>

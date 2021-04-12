@@ -4,7 +4,8 @@
 <dict>
 	<key>Chapters</key>
 	<array>
-		<string>Chapter1.playgroundchapter</string>
+		<string>Introduction.playgroundchapter</string>
+		<string>The Basics.playgroundchapter</string>
 	</array>
 	<key>ContentIdentifier</key>
 	<string>com.apple.playgrounds.blank</string>
@@ -22,7 +23,5 @@
 	<array/>
 	<key>UserModuleMode</key>
 	<string>Full</string>
-	<key>HasMeaningfulResetPoint</key>
-	<false/>
 </dict>
 </plist>

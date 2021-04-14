@@ -20,16 +20,41 @@ public struct Scene3D: View {
     
     private func update() {
         scene.rootNode.enumerateChildNodes { node, stop in
+            print(node)
             if let name = node.name,
                let object = baseObject.childWithId(id: name) {
                 let child = object.object
-                //print("here")
+                
+                let animation = child.animation
+                let saveColor = node.geometry?.firstMaterial?.diffuse.contents as? UIColor
+                let saveOffset = node.transform
+                let saveOpacity = node.opacity
+                
+                SCNTransaction.begin()
+                SCNTransaction.animationDuration = animation?.duration ?? 0
+                SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: animation?.option ?? .linear)
+                if let repeats = animation?.repeatForever,
+                   repeats == true {
+                    SCNTransaction.completionBlock = {
+                        SCNTransaction.flush()
+                        SCNTransaction.begin()
+                        SCNTransaction.animationDuration = animation?.duration ?? 0
+                        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: animation?.option ?? .linear)
+                        SCNTransaction.completionBlock = {
+                            print("now")
+                            update()
+                        }
+                        node.geometry?.firstMaterial?.diffuse.contents = saveColor
+                        node.opacity = saveOpacity
+                        node.transform = saveOffset
+                        SCNTransaction.commit()
+                        
+                    }
+                }
+                
                 if name.contains("color"),
                    let newColor = child.color,
                    UIColor(newColor) != node.geometry?.firstMaterial?.diffuse.contents as? UIColor {
-                    
-                    SCNTransaction.animationDuration = 3
-                    SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
                     node.geometry?.firstMaterial?.diffuse.contents = UIColor(newColor)
                 }
                 
@@ -64,8 +89,6 @@ public struct Scene3D: View {
                         let yTranslation = index == 0 ? 0 : totalHeight + (spacing*Float(parentNode.childNodes.count-1))
                         let zTranslation = index == 0 ? 0 : totalLength + (spacing*Float(parentNode.childNodes.count-1))
                         
-                        SCNTransaction.animationDuration = 3
-                        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
                         switch xyz {
                         case .x:
                             node.position.x = xTranslation + newOffset.x
@@ -81,8 +104,6 @@ public struct Scene3D: View {
                             node.position.z = zTranslation + newOffset.z
                         }
                     } else {
-                        SCNTransaction.animationDuration = 3
-                        SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
                         node.transform = SCNMatrix4MakeTranslation(newOffset.x, newOffset.y, newOffset.z)
                     }
                 }
@@ -90,11 +111,10 @@ public struct Scene3D: View {
                 if name.contains("opacity"),
                    let newOpacity = child.opacity,
                    newOpacity != node.opacity {
-                    
-                    SCNTransaction.animationDuration = 3
-                    SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
                     node.opacity = newOpacity
                 }
+                
+                SCNTransaction.commit()
             }
         }
     }

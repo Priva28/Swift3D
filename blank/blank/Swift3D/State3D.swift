@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Combine
+import SwiftUI
 
 @propertyWrapper public class State3D<Value>: DynamicProperty3D {
     

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		302142E926273559006955A5 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302142E826273559006955A5 /* Plane.swift */; };
+		302142EB26274655006955A5 /* Animation3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302142EA26274655006955A5 /* Animation3D.swift */; };
 		309EAAD02621EB2A009972FE /* blankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAACF2621EB2A009972FE /* blankApp.swift */; };
 		309EAAD22621EB2A009972FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAD12621EB2A009972FE /* ContentView.swift */; };
 		309EAAD42621EB2D009972FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309EAAD32621EB2D009972FE /* Assets.xcassets */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		302142E826273559006955A5 /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
+		302142EA26274655006955A5 /* Animation3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation3D.swift; sourceTree = "<group>"; };
 		309EAACC2621EB2A009972FE /* blank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = blank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		309EAACF2621EB2A009972FE /* blankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blankApp.swift; sourceTree = "<group>"; };
 		309EAAD12621EB2A009972FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				309EAAE72621EB4A009972FE /* Stack.swift */,
 				309EAAE52621EB4A009972FE /* State3D.swift */,
 				302142E826273559006955A5 /* Plane.swift */,
+				302142EA26274655006955A5 /* Animation3D.swift */,
 			);
 			path = Swift3D;
 			sourceTree = "<group>";
@@ -188,6 +191,7 @@
 				309EAAF62621EB4B009972FE /* ObjectBuilder.swift in Sources */,
 				309EAAF72621EB4B009972FE /* EmptyObject.swift in Sources */,
 				309EAAF22621EB4A009972FE /* State3D.swift in Sources */,
+				302142EB26274655006955A5 /* Animation3D.swift in Sources */,
 				309EAAD22621EB2A009972FE /* ContentView.swift in Sources */,
 				309EAAEF2621EB4A009972FE /* Box.swift in Sources */,
 				309EAAF42621EB4B009972FE /* Stack.swift in Sources */,

@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SceneKit
 
 public struct ObjectAttributes {
     public var index: Int = 0
     public var color: Color? = nil
     public var offset: Location3D? = nil
     public var opacity: CGFloat? = nil
+    public var animation: Animation3D? = nil
+    //public var modifyForever: (() -> Void)? = nil
     public var onAppear: (() -> Void)? = nil
     public init() { }
 }
@@ -21,8 +24,30 @@ public protocol ObjectSupportedAttributes {
 }
 
 extension ObjectSupportedAttributes {
-    //public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
+    public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
 }
+
+//extension Object {
+//    public var modifyForever: (() -> Void)? {
+//        get {
+//            return attributes.modifyForever
+//        }
+//        set {
+//            attributes.modifyForever = newValue
+//        }
+//    }
+//    public func modifyForever<V>(value: inout State3D<V>, from: V, to: V) -> some Object {
+//        var me = self
+//        me.attributes.modifyForever = {
+//            value.wrappedValue = to
+//            DispatchQueue.main.asyncAfter(deadline: .now() + (attributes.animation?.duration ?? 1)) {
+//                value.wrappedValue = from
+//                _ = modifyForever(value: &value, from: from, to: to)
+//            }
+//        }
+//        return me
+//    }
+//}
 
 extension Object {
     public var index: Int {
@@ -84,6 +109,22 @@ extension Object {
     public func opacity(_ opacity: CGFloat) -> some Object {
         var me = self
         me.opacity = opacity
+        return me
+    }
+}
+
+extension Object {
+    public var animation: Animation3D? {
+        get {
+            return attributes.animation
+        }
+        set {
+            attributes.animation = newValue
+        }
+    }
+    public func animation(_ animation: Animation3D?) -> some Object {
+        var me = self
+        me.attributes.animation = animation
         return me
     }
 }

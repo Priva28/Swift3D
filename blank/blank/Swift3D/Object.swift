@@ -45,14 +45,32 @@ extension Object {
     }
 }
 
+//extension Object {
+//    public func withAnimation(_ animation: Animation3D, body: @escaping () -> Void) {
+//        body()
+//        let mirror = Mirror(reflecting: self)
+//        for child in mirror.children {
+//            if let child = child.value as? DynamicProperty3D {
+//                child.update()
+//            }
+//        }
+//    }
+//}
+
+//extension Object {
+//    public func repeatingForever(body: @escaping () -> Void, delay: CGFloat = 1) {
+//        DispatchQueue.ma
+//    }
+//}
+
 extension Object {
     public var scnNode: SCNNode {
         let render = renderScnNode()
         _ = render.1.compactMap {
             switch $0 {
             case .onAppear(let function):
-                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 1 second after this
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 1.5 second after this
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     function()
                 }
             default:

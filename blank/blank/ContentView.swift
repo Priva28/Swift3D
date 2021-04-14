@@ -9,7 +9,7 @@ import SwiftUI
 
 struct obj: Object {
     @State3D var test = false
-    var attributes: ObjectAttributes = ObjectAttributes()
+    
     var object: Object {
         Stack(.y) {
             Plane()
@@ -17,7 +17,8 @@ struct obj: Object {
             Stack(.x) {
                 Box()
                     .color(test ? .red : .white)
-                    .offset(z: test ? 1 : 0)
+                    .offset(x: test ? -1 : 0)
+                    .animation(.easeOut(duration: 3).repeatForever())
                 Sphere()
                     .opacity(test ? 1 : 0.1)
                     .onAppear {

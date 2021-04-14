@@ -51,7 +51,10 @@ extension Object {
         _ = render.1.compactMap {
             switch $0 {
             case .onAppear(let function):
-                function()
+                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 1 second after this
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    function()
+                }
             default:
                 break
             }

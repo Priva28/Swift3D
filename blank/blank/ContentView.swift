@@ -8,28 +8,22 @@
 import SwiftUI
 
 struct obj: Object {
-    @State3D var test = 0
+    @State3D var test = false
     var attributes: ObjectAttributes = ObjectAttributes()
     var object: Object {
-        Stack(.x) {
-            Box(chamferRadius: 0.1)
-                .color(.red)
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        test = 3
-                    }
-                }
-            Stack(.y, spacing: 0.2) {
+        Stack(.y) {
+            Plane()
+                .color(.gray)
+            Stack(.x) {
                 Box()
+                    .color(test ? .red : .white)
+                    .offset(z: test ? 1 : 0)
                 Sphere()
-                Pyramid()
-                    .offset(y: -0.5)
-                    //.offset(y: 1)
-                    .offset(x: test == 0 ? 0 : 1)
-                    //.offset(y: test == 0 ? 0 : 1)
-                    .offset(z: test == 0 ? 0 : 1)
+                    .opacity(test ? 1 : 0.1)
+                    .onAppear {
+                        test = true
+                    }
             }
-            .offset(y: test == 0 ? 0 : 0.5)
         }
     }
 }

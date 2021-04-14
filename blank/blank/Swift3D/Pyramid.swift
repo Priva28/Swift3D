@@ -17,7 +17,7 @@ public struct Pyramid: Object {
     public var attributes = ObjectAttributes()
     
     public let size: Size3D
-    public init(size: Size3D) { self.size = size }
+    public init(size: Size3D = Size3D(width: 1, height: 1, length: 1)) { self.size = size }
 }
 
 extension Pyramid {

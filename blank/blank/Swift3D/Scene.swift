@@ -20,7 +20,6 @@ public struct Scene3D: View {
     
     private func update() {
         scene.rootNode.enumerateChildNodes { node, stop in
-            print(node)
             if let name = node.name,
                let object = baseObject.childWithId(id: name) {
                 let child = object.object
@@ -39,7 +38,6 @@ public struct Scene3D: View {
                     if let parentNode = node.parent,
                        let parentName = parentNode.name,
                        parentName.hasPrefix("Stack") {
-                        print("ye")
                         
                         let stackProperties = parentName.components(separatedBy: ",")
     
@@ -49,22 +47,22 @@ public struct Scene3D: View {
                         
                         var totalWidth: Float = 0
                         for stackChild in parentNode.childNodes {
-                            totalWidth += stackChild.geometry!.boundingBox.max.x
+                            totalWidth += stackChild.geometry?.boundingBox.max.x ?? stackChild.boundingBox.max.x/2
                         }
                         
                         var totalHeight: Float = 0
                         for stackChild in parentNode.childNodes {
-                            totalHeight += stackChild.geometry!.boundingBox.max.y
+                            totalHeight += stackChild.geometry?.boundingBox.max.y ?? stackChild.boundingBox.max.y/2
                         }
                         
                         var totalLength: Float = 0
                         for stackChild in parentNode.childNodes {
-                            totalLength += stackChild.geometry!.boundingBox.max.z
+                            totalLength += stackChild.geometry?.boundingBox.max.z ?? stackChild.boundingBox.max.z/2
                         }
                         
-                        let xTranslation = index == 0 ? 0 : totalHeight + spacing
-                        let yTranslation = index == 0 ? 0 : totalHeight + spacing
-                        let zTranslation = index == 0 ? 0 : totalHeight + spacing
+                        let xTranslation = index == 0 ? 0 : totalWidth + (spacing*Float(parentNode.childNodes.count-1))
+                        let yTranslation = index == 0 ? 0 : totalHeight + (spacing*Float(parentNode.childNodes.count-1))
+                        let zTranslation = index == 0 ? 0 : totalLength + (spacing*Float(parentNode.childNodes.count-1))
                         
                         SCNTransaction.animationDuration = 3
                         SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)

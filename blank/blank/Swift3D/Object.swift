@@ -28,20 +28,19 @@ extension Object {
 
 extension Object {
     public var id: String {
-        switch self {
-        case is Stack:
-            let stack = self as! Stack
-            var base = "Stack,\(stack.xyz.rawValue),\(String(describing: stack.spacing)),"
-            if color != nil { base.append("color") }
-            if offset != nil { base.append("offset") }
-            if opacity != nil { base.append("opacity") }
+        if self is Stack || object is Stack {
+            let stack = self as? Stack ?? self.object as! Stack
+            var base = "Stack,\(stack.xyz.rawValue),\(stack.spacing ?? 0),"
+            if color != nil || object.color != nil { base.append("color") }
+            if offset != nil || object.offset != nil { base.append("offset") }
+            if opacity != nil || object.opacity != nil { base.append("opacity") }
             return base + ",\(String(format: "%04d", index))"
-        default:
-            var base = "\(type(of: self))"
-            if color != nil { base.append("color") }
-            if offset != nil { base.append("offset") }
-            if opacity != nil { base.append("opacity") }
-            return base + String(format: "%04d", index)
+        } else {
+            var base = "\(type(of: self)),"
+            if color != nil || object.color != nil { base.append("color") }
+            if offset != nil || object.offset != nil { base.append("offset") }
+            if opacity != nil || object.opacity != nil { base.append("opacity") }
+            return base + ",\(String(format: "%04d", index))"
         }
     }
 }
@@ -62,17 +61,7 @@ extension Object {
     
     // THIS IS THE DEFAULT ONLY DONT EXPECT THIS TO APPLY CHANGES TO EVERYTHING AS MOST HAVE CUSTOM IMPLEMENTATIONS
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        let render = object.renderScnNode()
-        let node = render.0
-        
-        let nodeIndex = node.name!.suffix(4)
-        var nodeName = node.name!
-        nodeName.removeLast(4)
-        if color != nil { nodeName.append("color") }
-        if offset != nil { nodeName.append("offset") }
-        if opacity != nil { nodeName.append("opacity") }
-        node.name = nodeName + nodeIndex
-        return (node, render.1)
+        return object.renderScnNode()
     }
     
     public func applyAttributes(to node: inout SCNNode) -> [Attributes] {

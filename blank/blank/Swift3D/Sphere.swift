@@ -16,7 +16,7 @@ public struct Sphere: Object {
     public var attributes = ObjectAttributes()
     
     public let radius: CGFloat
-    public init(radius: CGFloat) { self.radius = radius }
+    public init(radius: CGFloat = 0.5) { self.radius = radius }
 }
 
 extension Sphere {

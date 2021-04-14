@@ -11,7 +11,6 @@ import Combine
 public struct Box: Object {
     public var object: Object { self }
     
-    public var id = UUID()
     public var attributes = ObjectAttributes()
     
     public let size: Size3D

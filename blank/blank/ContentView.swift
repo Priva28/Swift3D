@@ -9,18 +9,23 @@ import SwiftUI
 
 struct obj: Object {
     @State3D var test = 0
-    @State var y = 7
-    var id = UUID()
     var attributes: ObjectAttributes = ObjectAttributes()
     var object: Object {
-        Box(chamferRadius: 0.4)
-            .opacity(test == 0 ? 0.1 : 1)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    test = 1
-                    print("ran")
+        Stack(.x) {
+            Box(chamferRadius: 0.1)
+                .color(test == 0 ? .white : .red)
+                .opacity(test == 0 ? 0.1 : 1)
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        test = 3
+                    }
                 }
-            }
+            Box(chamferRadius: 0.1)
+                .color(test == 0 ? .white : .yellow)
+                .opacity(test == 0 ? 0.1 : 1)
+                .offset(z: test == 0 ? 1 : 0.1)
+        }
+        
     }
 }
 

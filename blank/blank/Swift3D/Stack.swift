@@ -10,9 +10,8 @@ import SceneKit
 import Combine
 
 public struct Stack: Object {
-    public var subject = PassthroughSubject<UUID, Never>()
     public var object: Object { self }
-    public var id = UUID()
+    
     public var attributes = ObjectAttributes()
     
     public var content: [Object]
@@ -22,30 +21,28 @@ public struct Stack: Object {
     public init(_ xyz: XYZ, spacing: Float? = nil, @ObjectBuilder content: () -> [Object]) {
         self.xyz = xyz
         self.spacing = spacing
-        self.content = content()
+        
+        var objects: [Object] = []
+        for (index, i) in content().enumerated() {
+            var object = i
+            object.index = index
+            objects.append(object)
+        }
+        
+        self.content = objects
     }
 }
 
 extension Stack {
-    func stackToNode(xyz: XYZ, content: [Object], spacing: Float?, color: Color?) -> SCNNode {
-        guard let firstInContent = content.first else { return SCNNode() }
-        let parentNode = firstInContent.scnNode
-        if firstInContent.color == nil {
-            if let color = color {
-                parentNode.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
-            }
-        }
-        for object in content where object.id != firstInContent.id {
+    func stackToNode(xyz: XYZ, spacing: Float?, color: Color?) -> SCNNode {
+        let parentNode = SCNNode()
+        
+        for (index, object) in content.enumerated() {
             let childNode = object.scnNode
             let spacing = spacing ?? 0
-            let xTranslation = parentNode.boundingBox.max.x + spacing + childNode.boundingBox.max.x
-            let yTranslation = parentNode.boundingBox.min.y + spacing + childNode.boundingBox.min.y
-            let zTranslation = parentNode.boundingBox.max.z + spacing + childNode.boundingBox.max.z
-            if object.color == nil {
-                if let color = color {
-                    childNode.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
-                }
-            }
+            let xTranslation = index == 0 ? 0 : parentNode.boundingBox.max.x + spacing + childNode.boundingBox.max.x
+            let yTranslation = index == 0 ? 0 : parentNode.boundingBox.min.y + spacing + childNode.boundingBox.min.y
+            let zTranslation = index == 0 ? 0 : parentNode.boundingBox.max.z + spacing + childNode.boundingBox.max.z
             switch xyz {
             case .x:
                 childNode.transform = SCNMatrix4Translate(childNode.transform, xTranslation, 0, 0)
@@ -62,14 +59,14 @@ extension Stack {
 
 extension Stack {
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        var node = stackToNode(xyz: xyz, content: content, spacing: spacing, color: color)
+        var node = stackToNode(xyz: xyz, spacing: spacing, color: color)
         let changedAttributes = applyAttributes(to: &node)
         return (node, changedAttributes)
     }
 }
 
-public enum XYZ {
-    case x
-    case y
-    case z
+public enum XYZ: String {
+    case x = "x"
+    case y = "y"
+    case z = "z"
 }

@@ -11,7 +11,7 @@ import Combine
 public protocol Object: ObjectSupportedAttributes, ObjectGroup {
     var object: Object { get }
     var scnNode: SCNNode { get }
-    var id: UUID { get }
+    var id: String { get }
     func renderScnNode() -> (SCNNode, [Attributes])
 }
 
@@ -24,30 +24,47 @@ public enum Attributes {
 
 extension Object {
     public var objects: [Object] { [self] }
-    public var id: UUID { UUID() }
+}
+
+extension Object {
+    public var id: String {
+        switch self {
+        case is Stack:
+            let stack = self as! Stack
+            var base = "Stack,\(stack.xyz.rawValue),\(String(describing: stack.spacing)),"
+            if color != nil { base.append("color") }
+            if offset != nil { base.append("offset") }
+            if opacity != nil { base.append("opacity") }
+            return base + ",\(String(format: "%04d", index))"
+        default:
+            var base = "\(type(of: self))"
+            if color != nil { base.append("color") }
+            if offset != nil { base.append("offset") }
+            if opacity != nil { base.append("opacity") }
+            return base + String(format: "%04d", index)
+        }
+    }
 }
 
 extension Object {
     public var scnNode: SCNNode {
         let render = renderScnNode()
-        render.0.name = id.uuidString
-        _ = render.1.compactMap { e in
-            switch e {
-            case .opacity:
-                render.0.name!.append("opacity")
-            case .onAppear(let method):
-                method()
+        _ = render.1.compactMap {
+            switch $0 {
+            case .onAppear(let function):
+                function()
             default:
-                print("fail")
+                print(" ")
             }
         }
         return render.0
     }
+    
     // THIS IS THE DEFAULT ONLY DONT EXPECT THIS TO APPLY CHANGES TO EVERYTHING AS MOST HAVE CUSTOM IMPLEMENTATIONS
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        let render = object.renderScnNode()
-        return render
+        return object.renderScnNode()
     }
+    
     public func applyAttributes(to node: inout SCNNode) -> [Attributes] {
         var changedAttributes: [Attributes] = []
         
@@ -57,7 +74,7 @@ extension Object {
         }
         
         if let offset = offset {
-            changedAttributes.append(.color)
+            changedAttributes.append(.offset)
             node.transform = SCNMatrix4MakeTranslation(offset.x, offset.y, offset.z)
         }
         
@@ -69,6 +86,8 @@ extension Object {
         if let onAppear = onAppear {
             changedAttributes.append(.onAppear(onAppear))
         }
+        
+        node.name = id
         
         return changedAttributes
     }
@@ -86,20 +105,29 @@ extension Object {
 }
 
 extension Object {
-    func childWithId(uuid: UUID) -> Object? {
+    func childWithId(id: String) -> Object? {
         var array: [Object] = []
         var timeout = 0
         if array.isEmpty {
             array.append(self)
         }
-        while array.last!.id != uuid {
-            array.append(array.last!.object)
+        while !array.contains(where: { $0.id == id }) {
+            print(array.last!)
+            switch array.last! {
+            case is Stack:
+                let stack = array.last! as! Stack
+                for object in stack.content {
+                    array.append(object)
+                }
+            default:
+                array.append(array.last!.object)
+            }
             timeout += 1
             if timeout > 1000 {
                 print("too many objects to search")
                 return nil
             }
         }
-        return array.last!
+        return array.first { $0.id == id }
     }
 }

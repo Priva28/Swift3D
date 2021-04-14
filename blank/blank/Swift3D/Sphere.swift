@@ -13,7 +13,6 @@ public struct Sphere: Object {
     
     public var object: Object { self }
     
-    public var id = UUID()
     public var attributes = ObjectAttributes()
     
     public let radius: CGFloat

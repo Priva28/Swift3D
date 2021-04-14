@@ -8,10 +8,12 @@
 import SwiftUI
 
 public struct ObjectAttributes {
+    public var index: Int = 0
     public var color: Color? = nil
     public var offset: Location3D? = nil
     public var opacity: CGFloat? = nil
     public var onAppear: (() -> Void)? = nil
+    public init() { }
 }
 
 public protocol ObjectSupportedAttributes {
@@ -20,6 +22,17 @@ public protocol ObjectSupportedAttributes {
 
 extension ObjectSupportedAttributes {
     //public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
+}
+
+extension Object {
+    public var index: Int {
+        get {
+            return attributes.index
+        }
+        set {
+            attributes.index = newValue
+        }
+    }
 }
 
 extension Object {

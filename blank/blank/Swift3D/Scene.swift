@@ -20,7 +20,7 @@ public struct Scene3D: View {
     
     private func update() {
         scene.rootNode.enumerateChildNodes { node, stop in
-            //print(node.name)
+            print(node)
             if let name = node.name,
                let object = baseObject.childWithId(id: name) {
                 let child = object.object
@@ -35,20 +35,11 @@ public struct Scene3D: View {
                 }
                 
                 if name.contains("offset"),
-                   let newOffset = child.offset,
-                   !SCNMatrix4EqualToMatrix4(
-                    SCNMatrix4MakeTranslation(newOffset.x, newOffset.y, newOffset.z),
-                    node.transform
-                   ) {
-                    let tempNode = node.clone()
-                    let transform = SCNMatrix4MakeTranslation(newOffset.x, newOffset.y, newOffset.z)
-                    tempNode.transform = transform
-                    print(node.transform)
-                    //print(newOffset)
-                    
+                   let newOffset = child.offset {
                     if let parentNode = node.parent,
                        let parentName = parentNode.name,
                        parentName.hasPrefix("Stack") {
+                        print("ye")
                         
                         let stackProperties = parentName.components(separatedBy: ",")
     
@@ -56,19 +47,40 @@ public struct Scene3D: View {
                         let spacing = Float(stackProperties[2]) ?? 0
                         let index = Int(name.suffix(4))
                         
-                        let xTranslation = index == 0 ? 0 : parentNode.boundingBox.max.x
-                        let yTranslation = index == 0 ? 0 : parentNode.boundingBox.min.y
-                        let zTranslation = index == 0 ? 0 : parentNode.boundingBox.max.z
+                        var totalWidth: Float = 0
+                        for stackChild in parentNode.childNodes {
+                            totalWidth += stackChild.geometry!.boundingBox.max.x
+                        }
+                        
+                        var totalHeight: Float = 0
+                        for stackChild in parentNode.childNodes {
+                            totalHeight += stackChild.geometry!.boundingBox.max.y
+                        }
+                        
+                        var totalLength: Float = 0
+                        for stackChild in parentNode.childNodes {
+                            totalLength += stackChild.geometry!.boundingBox.max.z
+                        }
+                        
+                        let xTranslation = index == 0 ? 0 : totalHeight + spacing
+                        let yTranslation = index == 0 ? 0 : totalHeight + spacing
+                        let zTranslation = index == 0 ? 0 : totalHeight + spacing
                         
                         SCNTransaction.animationDuration = 3
                         SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
                         switch xyz {
                         case .x:
-                            node.transform = SCNMatrix4Translate(tempNode.transform, xTranslation, 0, 0)
+                            node.position.x = xTranslation + newOffset.x
+                            node.position.y = newOffset.y
+                            node.position.z = newOffset.z
                         case .y:
-                            node.transform = SCNMatrix4Translate(tempNode.transform, 0, yTranslation, 0)
+                            node.position.x = newOffset.x
+                            node.position.y = yTranslation + newOffset.y
+                            node.position.z = newOffset.z
                         case .z:
-                            node.transform = SCNMatrix4Translate(tempNode.transform, 0, 0, zTranslation)
+                            node.position.x = newOffset.x
+                            node.position.y = newOffset.y
+                            node.position.z = zTranslation + newOffset.z
                         }
                     } else {
                         SCNTransaction.animationDuration = 3

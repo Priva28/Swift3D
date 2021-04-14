@@ -41,17 +41,20 @@ extension Stack {
             let childNode = object.scnNode
             let spacing = spacing ?? 0
             let xTranslation = index == 0 ? 0 : parentNode.boundingBox.max.x + spacing + childNode.boundingBox.max.x
-            let yTranslation = index == 0 ? 0 : parentNode.boundingBox.min.y + spacing + childNode.boundingBox.min.y
+            let yTranslation = index == 0 ? 0 : parentNode.boundingBox.max.y + spacing + childNode.boundingBox.max.y
             let zTranslation = index == 0 ? 0 : parentNode.boundingBox.max.z + spacing + childNode.boundingBox.max.z
             switch xyz {
             case .x:
-                childNode.transform = SCNMatrix4Translate(childNode.transform, xTranslation, 0, 0)
+                childNode.position.x += xTranslation
             case .y:
-                childNode.transform = SCNMatrix4Translate(childNode.transform, 0, yTranslation, 0)
+//                print(parentNode.boundingBox.max)
+//                print(childNode.boundingBox.max)
+                childNode.position.y += yTranslation
             case .z:
-                childNode.transform = SCNMatrix4Translate(childNode.transform, 0, 0, zTranslation)
+                childNode.position.z += zTranslation
             }
             parentNode.addChildNode(childNode)
+            //print(parentNode.boundingBox.max)
         }
         return parentNode
     }

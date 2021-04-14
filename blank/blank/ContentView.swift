@@ -11,21 +11,44 @@ struct obj: Object {
     @State3D var test = 0
     var attributes: ObjectAttributes = ObjectAttributes()
     var object: Object {
-        Stack(.x) {
+        Stack(.y) {
             Box(chamferRadius: 0.1)
-                .color(test == 0 ? .white : .red)
-                .opacity(test == 0 ? 0.1 : 1)
+                .color(.red)
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                         test = 3
                     }
                 }
-            Box(chamferRadius: 0.1)
-                .color(test == 0 ? .white : .yellow)
-                .opacity(test == 0 ? 0.1 : 1)
-                .offset(z: test == 0 ? 1 : 0.1)
+            obj2()
+                //.offset(y: 1)
+                .offset(x: test == 0 ? 0 : 1)
+                //.offset(y: test == 0 ? 0 : 1)
+                .offset(z: test == 0 ? 0 : 1)
         }
-        
+    }
+}
+
+struct obj2: Object {
+    var attributes: ObjectAttributes = ObjectAttributes()
+    var object: Object {
+        Stack(.y) {
+            Box()
+            Box()
+        }
+    }
+}
+
+struct obj3: Object {
+    @State3D var test = 0
+    var attributes: ObjectAttributes = ObjectAttributes()
+    var object: Object {
+        Box()
+            .offset(x: test == 0 ? 0 : 1)
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    test = 3
+                }
+            }
     }
 }
 

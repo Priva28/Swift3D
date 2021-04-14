@@ -54,7 +54,7 @@ extension Object {
             case .onAppear(let function):
                 function()
             default:
-                print(" ")
+                break
             }
         }
         return render.0
@@ -62,7 +62,17 @@ extension Object {
     
     // THIS IS THE DEFAULT ONLY DONT EXPECT THIS TO APPLY CHANGES TO EVERYTHING AS MOST HAVE CUSTOM IMPLEMENTATIONS
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        return object.renderScnNode()
+        let render = object.renderScnNode()
+        let node = render.0
+        
+        let nodeIndex = node.name!.suffix(4)
+        var nodeName = node.name!
+        nodeName.removeLast(4)
+        if color != nil { nodeName.append("color") }
+        if offset != nil { nodeName.append("offset") }
+        if opacity != nil { nodeName.append("opacity") }
+        node.name = nodeName + nodeIndex
+        return (node, render.1)
     }
     
     public func applyAttributes(to node: inout SCNNode) -> [Attributes] {
@@ -75,7 +85,9 @@ extension Object {
         
         if let offset = offset {
             changedAttributes.append(.offset)
-            node.transform = SCNMatrix4MakeTranslation(offset.x, offset.y, offset.z)
+            node.position.x = node.position.x + offset.x
+            node.position.y = node.position.y + offset.y
+            node.position.z = node.position.z + offset.z
         }
         
         if let opacity = opacity {
@@ -112,7 +124,6 @@ extension Object {
             array.append(self)
         }
         while !array.contains(where: { $0.id == id }) {
-            print(array.last!)
             switch array.last! {
             case is Stack:
                 let stack = array.last! as! Stack

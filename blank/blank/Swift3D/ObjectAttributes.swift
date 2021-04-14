@@ -67,7 +67,7 @@ extension Object {
     }
     public func offset(x: Float = 0, y: Float = 0, z: Float = 0) -> some Object {
         var me = self
-        me.offset = Location3D(x: x, y: y, z: z)
+        me.offset = Location3D(x: x + (offset?.x ?? 0), y: y + (offset?.y ?? 0), z: z + (offset?.z ?? 0))
         return me
     }
 }

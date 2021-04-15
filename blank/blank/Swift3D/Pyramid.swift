@@ -23,6 +23,7 @@ public struct Pyramid: Object {
 extension Pyramid {
     public func renderScnNode() -> (SCNNode, [Attributes]) {
         var node = SCNNode(geometry: SCNPyramid(width: size.width, height: size.height, length: size.length))
+        
         let changedAttributes = applyAttributes(to: &node)
         return (node, changedAttributes)
     }

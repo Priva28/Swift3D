@@ -47,17 +47,27 @@ extension ViewPlane {
         }
         let changedAttributes = applyAttributes(to: &node)
         
-        let materialView = UIHostingController(rootView: body).view!
-        materialView.isOpaque = false
-        materialView.backgroundColor = UIColor(color ?? .white)
-        materialView.frame = CGRect(x: 0, y: 0, width: plane.width*50, height: plane.height*50)
-        
-        let material = SCNMaterial()
-        material.diffuse.contents = materialView
-        node.geometry?.materials = [material]
-        node.geometry?.materials.first?.isDoubleSided = doubleSided
+        DispatchQueue.main.async {
+            let materialView = UIHostingController(rootView: body).view!
+            materialView.isOpaque = false
+            materialView.backgroundColor = UIColor(color ?? .clear)
+            materialView.frame = CGRect(x: 0, y: 0, width: plane.width*50, height: plane.height*50)
+            
+            let material = SCNMaterial()
+            material.diffuse.contents = viewToImage(view: materialView)
+            node.geometry?.materials = [material]
+            node.geometry?.materials.first?.isDoubleSided = doubleSided
+        }
         
         return (node, changedAttributes)
+    }
+    
+    private func viewToImage(view: UIView) -> UIImage {
+        let renderer = UIGraphicsImageRenderer(size: view.bounds.size)
+        let image = renderer.image { ctx in
+            view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
+        }
+        return image
     }
 }
 

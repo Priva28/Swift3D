@@ -17,7 +17,7 @@ public struct Plane: Object {
     private var vertical: Bool
     private var cornerRadius: CGFloat
     
-    public init(size: CGSize = .init(width: 10, height: 10), doubleSided: Bool = true, vertical: Bool = false, cornerRadius: CGFloat = 0) {
+    public init(size: CGSize = .init(width: 10, height: 10), vertical: Bool = false, doubleSided: Bool = true, cornerRadius: CGFloat = 0) {
         self.size = size
         self.doubleSided = doubleSided
         self.vertical = vertical

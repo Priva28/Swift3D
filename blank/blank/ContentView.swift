@@ -73,12 +73,28 @@ struct TrulyCustomObject: Object {
             }
         }
         .color(.red)
+        //Box(size: .init(width: <#T##CGFloat#>, height: <#T##CGFloat#>, length: <#T##CGFloat#>), chamferRadius: <#T##CGFloat#>)
+    }
+}
+
+struct TwoDInThreeD: Object {
+    var object: Object {
+        ViewPlane(vertical: true) {
+            //#-editable-code
+            VStack {
+                Text("This is a 2D SwiftUI view inside a 3D world!")
+                    .font(.title)
+                    .padding()
+                Text("Try adding your own view here!")
+            }
+            //#-end-editable-code
+        }
     }
 }
 
 struct ContentView: View {
     var body: some View {
-        Scene3D(baseObject: TrulyCustomObject())
+        Scene3D(baseObject: TwoDInThreeD())
             .backgroundColor(.blue)
     }
 }

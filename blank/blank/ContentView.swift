@@ -11,14 +11,15 @@ struct obj: Object {
     @State3D var test = false
     
     var object: Object {
-        Stack(.y) {
+        return Stack(.y) {
             Plane()
                 .color(.gray)
             Stack(.x) {
                 Box()
                     .color(test ? .red : .white)
                     .offset(x: test ? -1 : 0)
-                    .animation(.easeOut(duration: 3).repeatForever())
+                    .opacity(test ? 1 : 0.5)
+                    .animation(Animation3D.easeOut(duration: 5).repeatForever())
                 Sphere()
                     .opacity(test ? 1 : 0.1)
                     .onAppear {
@@ -45,10 +46,11 @@ struct obj3: Object {
     var object: Object {
         Box()
             .offset(x: test == 0 ? 0 : 1)
+            .color(test == 0 ? .white : .red)
+            .animation(.linear(duration: 3).repeatForever())
+            .opacity(test == 0 ? 0.9 : 1)
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                    test = 3
-                }
+                test = 3
             }
     }
 }

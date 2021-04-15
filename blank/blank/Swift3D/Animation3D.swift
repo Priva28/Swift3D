@@ -9,12 +9,12 @@ import SceneKit
 import SwiftUI
 
 public struct Animation3D {
-    private init(option: CAMediaTimingFunctionName, duration: Double, repeatForever: Bool = false) {
+    private init(option: SCNActionTimingMode, duration: Double, repeatForever: Bool = false) {
         self.option = option
         self.duration = duration
         self.repeatForever = repeatForever
     }
-    var option: CAMediaTimingFunctionName
+    var option: SCNActionTimingMode
     var duration: Double
     var repeatForever: Bool
     enum Options {

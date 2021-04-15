@@ -12,10 +12,10 @@ public struct Plane: Object {
     
     public var attributes = ObjectAttributes()
     
-    public let size: CGSize
-    public var doubleSided: Bool
-    public var vertical: Bool
-    public var cornerRadius: CGFloat
+    private let size: CGSize
+    private var doubleSided: Bool
+    private var vertical: Bool
+    private var cornerRadius: CGFloat
     
     public init(size: CGSize = .init(width: 10, height: 10), doubleSided: Bool = true, vertical: Bool = false, cornerRadius: CGFloat = 0) {
         self.size = size

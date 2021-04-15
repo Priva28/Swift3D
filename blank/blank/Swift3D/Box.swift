@@ -13,8 +13,8 @@ public struct Box: Object {
     
     public var attributes = ObjectAttributes()
     
-    public let size: Size3D
-    public var chamferRadius: CGFloat
+    private let size: Size3D
+    private var chamferRadius: CGFloat
     public init(size: Size3D = .init(width: 1, height: 1, length: 1), chamferRadius: CGFloat = 0) {
         self.size = size
         self.chamferRadius = chamferRadius

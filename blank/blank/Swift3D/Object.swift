@@ -69,8 +69,8 @@ extension Object {
         _ = render.1.compactMap {
             switch $0 {
             case .onAppear(let function):
-                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 1.5 second after this
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 0.5 seconds after this
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     function()
                 }
             default:
@@ -82,7 +82,11 @@ extension Object {
     
     // THIS IS THE DEFAULT ONLY DONT EXPECT THIS TO APPLY CHANGES TO EVERYTHING AS MOST HAVE CUSTOM IMPLEMENTATIONS
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        return object.renderScnNode()
+        let render = object.renderScnNode()
+        var node = render.0
+        var changedAttributes = applyAttributes(to: &node)
+        changedAttributes.append(contentsOf: render.1)
+        return (node, changedAttributes)
     }
     
     public func applyAttributes(to node: inout SCNNode) -> [Attributes] {

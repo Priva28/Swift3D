@@ -15,7 +15,7 @@ public struct Sphere: Object {
     
     public var attributes = ObjectAttributes()
     
-    public let radius: CGFloat
+    private let radius: CGFloat
     public init(radius: CGFloat = 0.5) { self.radius = radius }
 }
 

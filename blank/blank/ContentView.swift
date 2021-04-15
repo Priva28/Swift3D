@@ -20,8 +20,9 @@ struct obj: Object {
                     .offset(x: test ? -1 : 0)
                     .opacity(test ? 1 : 0.5)
                     .animation(Animation3D.easeOut(duration: 5).repeatForever())
-                Sphere()
-                    .opacity(test ? 1 : 0.1)
+                obj2()
+                    .offset(z: 2)
+                    .color(.red)
                     .onAppear {
                         test = true
                     }
@@ -31,11 +32,17 @@ struct obj: Object {
 }
 
 struct obj2: Object {
+    @State3D var test2 = false
     var attributes: ObjectAttributes = ObjectAttributes()
     var object: Object {
         Stack(.y) {
             Box()
-            Box()
+            Sphere()
+                .opacity(test2 ? 1 : 0.5)
+                .animation(Animation3D.easeIn(duration: 5))
+                .onAppear {
+                    test2 = true
+                }
         }
     }
 }
@@ -55,9 +62,23 @@ struct obj3: Object {
     }
 }
 
+struct TrulyCustomObject: Object {
+    @State3D private var specialVariable: Bool = /*#-editable-code*/true/*#-end-editable-code*/
+    
+    var object: Object {
+        ViewPlane(size: CGSize(width: 20, height: 30)) {
+            VStack {
+                Text("Hello my name is viewplane")
+                Spacer()
+            }
+        }
+        .color(.red)
+    }
+}
+
 struct ContentView: View {
     var body: some View {
-        Scene3D(baseObject: obj())
+        Scene3D(baseObject: TrulyCustomObject())
             .backgroundColor(.blue)
     }
 }

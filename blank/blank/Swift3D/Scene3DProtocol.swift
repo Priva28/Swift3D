@@ -1,27 +1,73 @@
 //
-//  Scene.swift
-//  testingmy3dthing
+//  Scene3DProtocol.swift
+//  blank
 //
-//  Created by Christian Privitelli on 11/4/21.
+//  Created by Christian Privitelli on 17/4/21.
 //
 
-import SwiftUI
 import SceneKit
 
-public struct Scene3D: View {
-    public var body: some View {
-        SceneView(scene: scene, pointOfView: camera, options: [.allowsCameraControl, .jitteringEnabled])
+internal protocol Scene3DProtocol {
+    var scene: SCNScene { get }
+    var baseObject: Object { get set }
+    
+    var ambientLight: SCNNode { get }
+    var directionalLight: SCNNode { get }
+    func update()
+}
+
+// MARK: - Configure Scene Lighting
+
+extension Scene3DProtocol {
+    // Ambient light lights areas not lit by directional light.
+    var ambientLight: SCNNode {
+        let ambientLight = SCNLight()
+        ambientLight.type = .ambient
+        ambientLight.color = UIColor.white
+        ambientLight.intensity = 2000
+        ambientLight.categoryBitMask = -1
+        
+        let ambientLightNode = SCNNode()
+        ambientLightNode.light = ambientLight
+        ambientLightNode.position = SCNVector3(x: 0, y: 5, z: 0)
+        return ambientLightNode
     }
     
-    private var scene: SCNScene
-    
-    private var camera: SCNNode
-    private var baseObject: Object
-    
-    private func update() {
+    // Directional light creates shadows
+    var directionalLight: SCNNode {
+        let directionalLight = SCNLight()
+        directionalLight.type = .directional
+        directionalLight.castsShadow = true
+        directionalLight.color = UIColor.white
+        directionalLight.automaticallyAdjustsShadowProjection = true
+        directionalLight.shadowColor = UIColor.black.withAlphaComponent(0.5)
+        directionalLight.shadowMode = .deferred
+        directionalLight.shadowRadius = 8
+        directionalLight.zNear = 0
+        directionalLight.zFar = 50
+        directionalLight.shadowSampleCount = 32
+        directionalLight.shadowMapSize = CGSize(width: 4096, height: 4096)
+        directionalLight.categoryBitMask = -1
+        
+        let directionalLightNode = SCNNode()
+        directionalLightNode.light = directionalLight
+        directionalLightNode.position = SCNVector3(x: 0, y: 15, z: 0)
+        directionalLightNode.eulerAngles = SCNVector3(deg2rad(-88), 0, deg2rad(-2))
+        
+        return directionalLightNode
+    }
+}
+
+// MARK: - Configure update method.
+
+extension Scene3DProtocol {
+    func update() {
         scene.rootNode.enumerateChildNodes { node, stop in
+            // Ensure node has a name.
+            // If so search for a child object from base object with matching id.
             if let name = node.name,
-               let object = baseObject.childWithId(id: name) {
+               let object = baseObject.childWithId(id: name)
+            {
                 let child = object.object
                 
                 let animationDuration = child.animation?.duration ?? 0
@@ -30,26 +76,28 @@ public struct Scene3D: View {
                 
                 var animationGroup: [SCNAction] = []
                 
+                // MARK: - Update color
                 if name.contains("color"),
                    let newColor = child.color,
-                   UIColor(newColor) != node.geometry?.firstMaterial?.diffuse.contents as? UIColor {
+                   UIColor(newColor) != node.geometry?.firstMaterial?.diffuse.contents as? UIColor
+                {
                     let oldColor = node.geometry?.firstMaterial?.diffuse.contents as? UIColor ?? .white
-                    let colorAction = SCNAction.customAction(duration: animationDuration) { actionNode, time in
-                        SCNTransaction.begin()
-                        SCNTransaction.animationDuration = animationDuration
-                        SCNTransaction.animationTimingFunction = animationCurve.caMediaTimingFunction()
-                        node.geometry?.firstMaterial?.diffuse.contents = UIColor(newColor)
-                        SCNTransaction.commit()
-                    }
-                    colorAction.timingMode = animationCurve
-                    if animationRepeatsForever {
-                        let colorAction2 = SCNAction.customAction(duration: animationDuration) { actionNode, time in
+                    
+                    func newColorAction(toColor: UIColor) -> SCNAction {
+                        SCNAction.customAction(duration: animationDuration) { actionNode, time in
                             SCNTransaction.begin()
                             SCNTransaction.animationDuration = animationDuration
                             SCNTransaction.animationTimingFunction = animationCurve.caMediaTimingFunction()
-                            node.geometry?.firstMaterial?.diffuse.contents = oldColor
+                            node.geometry?.firstMaterial?.diffuse.contents = toColor
                             SCNTransaction.commit()
                         }
+                    }
+                    
+                    let colorAction = newColorAction(toColor: UIColor(newColor))
+                    colorAction.timingMode = animationCurve
+                    
+                    if animationRepeatsForever {
+                        let colorAction2 = newColorAction(toColor: oldColor)
                         colorAction2.timingMode = animationCurve
                         animationGroup.append(SCNAction.sequence([colorAction, colorAction2]))
                     } else {
@@ -57,12 +105,17 @@ public struct Scene3D: View {
                     }
                 }
                 
+                // MARK: - Update offset
                 if name.contains("offset"),
-                   let newOffset = child.offset {
+                   let newOffset = child.offset
+                {
+                    var newVector = SCNVector3()
+                    
+                    // Check if object is in a stack.
                     if let parentNode = node.parent,
                        let parentName = parentNode.name,
-                       parentName.hasPrefix("Stack") {
-                        print("here")
+                       parentName.hasPrefix("Stack")
+                    {
                         let stackProperties = parentName.components(separatedBy: ",")
     
                         let xyz = XYZ(rawValue: stackProperties[1])!
@@ -88,7 +141,6 @@ public struct Scene3D: View {
                         let yTranslation = index == 0 ? 0 : totalHeight + ((spacing)*Float(parentNode.childNodes.count-1))
                         let zTranslation = index == 0 ? 0 : totalLength + ((spacing)*Float(parentNode.childNodes.count-1))
                         
-                        var newVector = SCNVector3()
                         switch xyz {
                         case .x:
                             newVector = SCNVector3(
@@ -111,19 +163,25 @@ public struct Scene3D: View {
                         }
                         let offsetAction = SCNAction.move(by: newVector, duration: animationDuration)
                         offsetAction.timingMode = animationCurve
+                        
                         if animationRepeatsForever {
                             animationGroup.append(SCNAction.sequence([offsetAction, offsetAction.reversed()]))
                         } else {
                             animationGroup.append(offsetAction)
                         }
-                    } else {
-                        let newVector = SCNVector3(
+                    } else if
+                        newOffset.x != node.position.x ||
+                        newOffset.y != node.position.y ||
+                        newOffset.z != node.position.z
+                    {
+                        newVector = SCNVector3(
                             x: newOffset.x - node.position.x,
                             y: newOffset.y - node.position.y,
                             z: newOffset.z - node.position.z
                         )
                         let offsetAction = SCNAction.move(by: newVector, duration: animationDuration)
                         offsetAction.timingMode = animationCurve
+                        
                         if animationRepeatsForever {
                             animationGroup.append(SCNAction.sequence([offsetAction, offsetAction.reversed()]))
                         } else {
@@ -132,15 +190,39 @@ public struct Scene3D: View {
                     }
                 }
                 
+                // MARK: - Update rotation
+                if name.contains("rotation"),
+                   let newRotation = child.rotation,
+                   deg2rad(newRotation.x) != node.eulerAngles.x ||
+                   deg2rad(newRotation.y) != node.eulerAngles.y ||
+                   deg2rad(newRotation.z) != node.eulerAngles.z
+                {
+                    let rotationAction = SCNAction.rotateBy(
+                        x: CGFloat(deg2rad(newRotation.x) - node.eulerAngles.x),
+                        y: CGFloat(deg2rad(newRotation.y) - node.eulerAngles.y),
+                        z: CGFloat(deg2rad(newRotation.z) - node.eulerAngles.z),
+                        duration: animationDuration
+                    )
+                    rotationAction.timingMode = animationCurve
+                    
+                    if animationRepeatsForever {
+                        animationGroup.append(SCNAction.sequence([rotationAction, rotationAction.reversed()]))
+                    } else {
+                        animationGroup.append(rotationAction)
+                    }
+                }
+                
+                // MARK: - Update opacity
                 // Yes my code is messy but if anyone at apple who works with scenekit is reading this, SCNActions modifying opacity are broken... no time to fix only 3 days left and still need to do the playground pages and walkthroughs.
                 if name.contains("opacity"),
                    let newOpacity = child.opacity,
-                   newOpacity != node.opacity {
+                   newOpacity != node.opacity
+                {
                     let opacityChange = newOpacity - node.opacity
                     let opacityAction = SCNAction.fadeOpacity(by: opacityChange, duration: animationDuration)
                     opacityAction.timingMode = animationCurve
+                    
                     if animationRepeatsForever {
-                        print(opacityChange)
                         let opacityAction2 = SCNAction.fadeOpacity(by: -opacityChange, duration: animationDuration)
                         opacityAction2.timingMode = animationCurve
                         animationGroup.append(SCNAction.sequence([opacityAction, opacityAction2]))
@@ -160,82 +242,5 @@ public struct Scene3D: View {
                 }
             }
         }
-    }
-    
-    public init(baseObject: Object) {
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        
-        let scene = SCNScene()
-        scene.rootNode.addChildNode(cameraNode)
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
-        
-        let ambientLight = SCNLight()
-        ambientLight.type = .ambient
-        ambientLight.color = UIColor.white
-        ambientLight.intensity = 2000
-        ambientLight.categoryBitMask = -1
-        
-        let directionalLight = SCNLight()
-        directionalLight.type = .directional
-        directionalLight.castsShadow = true
-        directionalLight.color = UIColor.white
-        directionalLight.automaticallyAdjustsShadowProjection = true
-        directionalLight.shadowColor = UIColor.black.withAlphaComponent(0.5)
-        directionalLight.shadowMode = .deferred
-        directionalLight.shadowRadius = 8
-        directionalLight.zNear = 0
-        directionalLight.zFar = 50
-        directionalLight.shadowSampleCount = 32
-        directionalLight.shadowMapSize = CGSize(width: 4096, height: 4096)
-        directionalLight.categoryBitMask = -1
-        
-        let directionalLightNode = SCNNode()
-        directionalLightNode.light = directionalLight
-        directionalLightNode.position = SCNVector3(x: 0, y: 15, z: 0)
-        directionalLightNode.eulerAngles = SCNVector3(deg2rad(-88), 0, deg2rad(-2))
-        
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = ambientLight
-        ambientLightNode.position = SCNVector3(x: 0, y: 5, z: 0)
-        
-        scene.rootNode.addChildNode(ambientLightNode)
-        scene.rootNode.addChildNode(directionalLightNode)
-        
-        scene.rootNode.addChildNode(baseObject.scnNode)
-        
-        self.scene = scene
-        self.camera = cameraNode
-        self.baseObject = baseObject
-        self.baseObject.bindProperties(update)
-    }
-    
-    fileprivate init(
-        baseObject: Object,
-        backgroundColor: Color? = nil,
-        backgroundImage: UIImage? = nil
-    ) {
-        self.init(baseObject: baseObject)
-        
-        if let backgroundColor = backgroundColor {
-            scene.background.contents = UIColor(backgroundColor)
-        }
-        
-        if let backgroundImage = backgroundImage {
-            scene.background.contents = backgroundImage
-        }
-    }
-}
-
-extension Scene3D {
-    public func backgroundColor(_ color: Color) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundColor: color)
-    }
-}
-
-extension Scene3D {
-    public func backgroundImage(_ image: UIImage) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundImage: image)
     }
 }

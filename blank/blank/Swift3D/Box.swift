@@ -9,16 +9,16 @@ import SceneKit
 import Combine
 
 public struct Box: Object {
-    public var object: Object { self }
-    
-    public var attributes = ObjectAttributes()
-    
-    private let size: Size3D
-    private var chamferRadius: CGFloat
     public init(size: Size3D = .init(width: 1, height: 1, length: 1), chamferRadius: CGFloat = 0) {
         self.size = size
         self.chamferRadius = chamferRadius
     }
+    
+    public var object: Object { self }
+    public var attributes = ObjectAttributes()
+    
+    private let size: Size3D
+    private var chamferRadius: CGFloat
 }
 
 extension Box {

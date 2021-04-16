@@ -56,9 +56,10 @@ struct obj3: Object {
     var object: Object {
         Box()
             .chamferRadius(0.1)
-            //.offset(x: test == 0 ? 0 : 1)
+            .offset(x: test == 0 ? 0 : 1)
             .color(test == 0 ? .white : .red)
             .animation(.linear(duration: 3).repeatForever())
+            .rotation(x: test == 0 ? 0 : 45)
             //.opacity(test == 0 ? 0.9 : 1)
             .onAppear {
                 test = 3
@@ -98,7 +99,7 @@ struct TwoDInThreeD: Object {
 
 struct ContentView: View {
     var body: some View {
-        Scene3D(baseObject: TwoDInThreeD())
+        Scene3D(baseObject: obj3())
             .backgroundColor(.blue)
     }
 }

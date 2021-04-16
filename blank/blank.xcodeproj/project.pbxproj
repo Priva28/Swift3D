@@ -10,11 +10,12 @@
 		302142E926273559006955A5 /* Plane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302142E826273559006955A5 /* Plane.swift */; };
 		302142EB26274655006955A5 /* Animation3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302142EA26274655006955A5 /* Animation3D.swift */; };
 		3037A74A262875A3007D190F /* ViewPlane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3037A749262875A3007D190F /* ViewPlane.swift */; };
+		3037A7512629E202007D190F /* Scene3DProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3037A7502629E202007D190F /* Scene3DProtocol.swift */; };
 		309EAAD02621EB2A009972FE /* blankApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAACF2621EB2A009972FE /* blankApp.swift */; };
 		309EAAD22621EB2A009972FE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAD12621EB2A009972FE /* ContentView.swift */; };
 		309EAAD42621EB2D009972FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309EAAD32621EB2D009972FE /* Assets.xcassets */; };
 		309EAAD72621EB2D009972FE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 309EAAD62621EB2D009972FE /* Preview Assets.xcassets */; };
-		309EAAEB2621EB4A009972FE /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAADE2621EB49009972FE /* Scene.swift */; };
+		309EAAEB2621EB4A009972FE /* Scene3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAADE2621EB49009972FE /* Scene3D.swift */; };
 		309EAAEC2621EB4A009972FE /* Pyramid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAADF2621EB49009972FE /* Pyramid.swift */; };
 		309EAAED2621EB4A009972FE /* ObjectAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE02621EB49009972FE /* ObjectAttributes.swift */; };
 		309EAAEF2621EB4A009972FE /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE22621EB4A009972FE /* Box.swift */; };
@@ -33,13 +34,14 @@
 		302142E826273559006955A5 /* Plane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plane.swift; sourceTree = "<group>"; };
 		302142EA26274655006955A5 /* Animation3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation3D.swift; sourceTree = "<group>"; };
 		3037A749262875A3007D190F /* ViewPlane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPlane.swift; sourceTree = "<group>"; };
+		3037A7502629E202007D190F /* Scene3DProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scene3DProtocol.swift; sourceTree = "<group>"; };
 		309EAACC2621EB2A009972FE /* blank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = blank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		309EAACF2621EB2A009972FE /* blankApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = blankApp.swift; sourceTree = "<group>"; };
 		309EAAD12621EB2A009972FE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		309EAAD32621EB2D009972FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		309EAAD62621EB2D009972FE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		309EAAD82621EB2D009972FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		309EAADE2621EB49009972FE /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		309EAADE2621EB49009972FE /* Scene3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene3D.swift; sourceTree = "<group>"; };
 		309EAADF2621EB49009972FE /* Pyramid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pyramid.swift; sourceTree = "<group>"; };
 		309EAAE02621EB49009972FE /* ObjectAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectAttributes.swift; sourceTree = "<group>"; };
 		309EAAE22621EB4A009972FE /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
@@ -105,22 +107,23 @@
 		309EAAF92621EB56009972FE /* Swift3D */ = {
 			isa = PBXGroup;
 			children = (
-				AA55920626299FBA0051205C /* ARScene.swift */,
-				309EAAE22621EB4A009972FE /* Box.swift */,
-				309EAAE32621EB4A009972FE /* DynamicProperty3D.swift */,
-				309EAAEA2621EB4A009972FE /* EmptyObject.swift */,
-				309EAAE62621EB4A009972FE /* Helpers.swift */,
 				309EAAE42621EB4A009972FE /* Object.swift */,
-				309EAAE02621EB49009972FE /* ObjectAttributes.swift */,
 				309EAAE92621EB4A009972FE /* ObjectBuilder.swift */,
-				309EAADF2621EB49009972FE /* Pyramid.swift */,
-				309EAADE2621EB49009972FE /* Scene.swift */,
-				309EAAE82621EB4A009972FE /* Sphere.swift */,
-				309EAAE72621EB4A009972FE /* Stack.swift */,
-				309EAAE52621EB4A009972FE /* State3D.swift */,
-				302142E826273559006955A5 /* Plane.swift */,
+				309EAAE02621EB49009972FE /* ObjectAttributes.swift */,
 				302142EA26274655006955A5 /* Animation3D.swift */,
+				AA55920626299FBA0051205C /* ARScene.swift */,
+				309EAADE2621EB49009972FE /* Scene3D.swift */,
+				3037A7502629E202007D190F /* Scene3DProtocol.swift */,
+				309EAAE22621EB4A009972FE /* Box.swift */,
+				309EAAE82621EB4A009972FE /* Sphere.swift */,
+				309EAADF2621EB49009972FE /* Pyramid.swift */,
+				309EAAE72621EB4A009972FE /* Stack.swift */,
+				302142E826273559006955A5 /* Plane.swift */,
 				3037A749262875A3007D190F /* ViewPlane.swift */,
+				309EAAEA2621EB4A009972FE /* EmptyObject.swift */,
+				309EAAE32621EB4A009972FE /* DynamicProperty3D.swift */,
+				309EAAE52621EB4A009972FE /* State3D.swift */,
+				309EAAE62621EB4A009972FE /* Helpers.swift */,
 			);
 			path = Swift3D;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 				309EAAD22621EB2A009972FE /* ContentView.swift in Sources */,
 				AA55920726299FBA0051205C /* ARScene.swift in Sources */,
 				309EAAEF2621EB4A009972FE /* Box.swift in Sources */,
+				3037A7512629E202007D190F /* Scene3DProtocol.swift in Sources */,
 				309EAAF42621EB4B009972FE /* Stack.swift in Sources */,
 				309EAAF32621EB4A009972FE /* Helpers.swift in Sources */,
 				302142E926273559006955A5 /* Plane.swift in Sources */,
@@ -210,7 +214,7 @@
 				309EAAD02621EB2A009972FE /* blankApp.swift in Sources */,
 				309EAAEC2621EB4A009972FE /* Pyramid.swift in Sources */,
 				3037A74A262875A3007D190F /* ViewPlane.swift in Sources */,
-				309EAAEB2621EB4A009972FE /* Scene.swift in Sources */,
+				309EAAEB2621EB4A009972FE /* Scene3D.swift in Sources */,
 				309EAAED2621EB4A009972FE /* ObjectAttributes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

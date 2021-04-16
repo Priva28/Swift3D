@@ -10,7 +10,7 @@ import Combine
 
 public struct EmptyObject: Object {
     public init() { }
-    public var object: Object { self }
     
+    public var object: Object { self }
     public var attributes = ObjectAttributes()
 }

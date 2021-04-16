@@ -10,14 +10,6 @@ import SceneKit
 import Combine
 
 public struct Stack: Object {
-    public var object: Object { self }
-    
-    public var attributes = ObjectAttributes()
-    
-    public var content: [Object]
-    public var xyz: XYZ
-    public var spacing: Float?
-    
     public init(_ xyz: XYZ, spacing: Float? = nil, @ObjectBuilder content: () -> [Object]) {
         self.xyz = xyz
         self.spacing = spacing
@@ -31,6 +23,13 @@ public struct Stack: Object {
         
         self.content = objects
     }
+    
+    public var object: Object { self }
+    public var attributes = ObjectAttributes()
+    
+    internal var content: [Object]
+    internal var xyz: XYZ
+    internal var spacing: Float?
 }
 
 extension Stack {
@@ -63,10 +62,4 @@ extension Stack {
         let changedAttributes = applyAttributes(to: &node)
         return (node, changedAttributes)
     }
-}
-
-public enum XYZ: String {
-    case x = "x"
-    case y = "y"
-    case z = "z"
 }

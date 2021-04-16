@@ -13,44 +13,69 @@ public struct ObjectAttributes {
     public var color: Color? = nil
     public var offset: Location3D? = nil
     public var opacity: CGFloat? = nil
+    public var rotation: Location3D? = nil
     public var animation: Animation3D? = nil
-    //public var modifyForever: (() -> Void)? = nil
     public var onAppear: (() -> Void)? = nil
     public init() { }
+}
+
+public enum Attributes {
+    case opacity
+    case color
+    case offset
+    case rotation
+    case onAppear(() -> Void)
 }
 
 public protocol ObjectSupportedAttributes {
     var attributes: ObjectAttributes { get set }
 }
 
+// THIS WILL MEAN CUSTOM VIEWS WONT BE ABLE TO SAVE ATTRIBUTES BUT IT LOOKS CLEANER SO ITS OK FOR NOW.
 extension ObjectSupportedAttributes {
     public var attributes: ObjectAttributes { get {ObjectAttributes()} set {} }
 }
 
-//extension Object {
-//    public var modifyForever: (() -> Void)? {
-//        get {
-//            return attributes.modifyForever
-//        }
-//        set {
-//            attributes.modifyForever = newValue
-//        }
-//    }
-//    public func modifyForever<V>(value: inout State3D<V>, from: V, to: V) -> some Object {
-//        var me = self
-//        me.attributes.modifyForever = {
-//            value.wrappedValue = to
-//            DispatchQueue.main.asyncAfter(deadline: .now() + (attributes.animation?.duration ?? 1)) {
-//                value.wrappedValue = from
-//                _ = modifyForever(value: &value, from: from, to: to)
-//            }
-//        }
-//        return me
-//    }
-//}
+extension Object {
+    public func applyAttributes(to node: inout SCNNode) -> [Attributes] {
+        var changedAttributes: [Attributes] = []
+        
+        if let color = color {
+            changedAttributes.append(.color)
+            node.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
+        }
+        
+        if let offset = offset {
+            changedAttributes.append(.offset)
+            node.position.x = node.position.x + offset.x
+            node.position.y = node.position.y + offset.y
+            node.position.z = node.position.z + offset.z
+        }
+        
+        if let rotation = rotation {
+            changedAttributes.append(.rotation)
+            node.eulerAngles.x = deg2rad(rotation.x)
+            node.eulerAngles.y = deg2rad(rotation.y)
+            node.eulerAngles.z = deg2rad(rotation.z)
+        }
+        
+        if let opacity = opacity {
+            changedAttributes.append(.opacity)
+            node.opacity = opacity
+        }
+        
+        if let onAppear = onAppear {
+            changedAttributes.append(.onAppear(onAppear))
+        }
+        
+        node.name = id
+        
+        return changedAttributes
+    }
+}
 
 extension Object {
-    public var index: Int {
+    internal var index: Int {
         get {
             return attributes.index
         }
@@ -61,7 +86,7 @@ extension Object {
 }
 
 extension Object {
-    public var color: Color? {
+    internal var color: Color? {
         get {
             return attributes.color
         }
@@ -77,7 +102,7 @@ extension Object {
 }
 
 extension Object {
-    public var offset: Location3D? {
+    internal var offset: Location3D? {
         get {
             return attributes.offset
         }
@@ -98,7 +123,7 @@ extension Object {
 }
 
 extension Object {
-    public var opacity: CGFloat? {
+    internal var opacity: CGFloat? {
         get {
             return attributes.opacity
         }
@@ -114,7 +139,7 @@ extension Object {
 }
 
 extension Object {
-    public var animation: Animation3D? {
+    internal var animation: Animation3D? {
         get {
             return attributes.animation
         }
@@ -130,7 +155,29 @@ extension Object {
 }
 
 extension Object {
-    public var onAppear: (() -> Void)? {
+    internal var rotation: Location3D? {
+        get {
+            return attributes.rotation
+        }
+        set {
+            attributes.rotation = newValue
+        }
+    }
+    public func rotation(_ rotation: Location3D) -> some Object {
+        var me = self
+        me.attributes.rotation = rotation
+        return me
+    }
+    public func rotation(x: Float = 0, y: Float = 0, z: Float = 0) -> some Object {
+        var me = self
+        me.rotation = Location3D(x: x + (rotation?.x ?? 0), y: y + (rotation?.y ?? 0), z: z + (rotation?.z ?? 0))
+        return me
+    }
+}
+
+
+extension Object {
+    internal var onAppear: (() -> Void)? {
         get {
             return attributes.onAppear
         }
@@ -144,3 +191,4 @@ extension Object {
         return me
     }
 }
+

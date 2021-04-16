@@ -15,53 +15,11 @@ public protocol Object: ObjectSupportedAttributes, ObjectGroup {
     func renderScnNode() -> (SCNNode, [Attributes])
 }
 
-public enum Attributes {
-    case opacity
-    case color
-    case offset
-    case onAppear(() -> Void)
-}
-
 extension Object {
     public var objects: [Object] { [self] }
 }
 
-extension Object {
-    public var id: String {
-        if self is Stack || object is Stack {
-            let stack = self as? Stack ?? self.object as! Stack
-            var base = "Stack,\(stack.xyz.rawValue),\(stack.spacing ?? 0),"
-            if color != nil || object.color != nil { base.append("color") }
-            if offset != nil || object.offset != nil { base.append("offset") }
-            if opacity != nil || object.opacity != nil { base.append("opacity") }
-            return base + ",\(String(format: "%04d", index))"
-        } else {
-            var base = "\(type(of: self)),"
-            if color != nil || object.color != nil { base.append("color") }
-            if offset != nil || object.offset != nil { base.append("offset") }
-            if opacity != nil || object.opacity != nil { base.append("opacity") }
-            return base + ",\(String(format: "%04d", index))"
-        }
-    }
-}
-
-//extension Object {
-//    public func withAnimation(_ animation: Animation3D, body: @escaping () -> Void) {
-//        body()
-//        let mirror = Mirror(reflecting: self)
-//        for child in mirror.children {
-//            if let child = child.value as? DynamicProperty3D {
-//                child.update()
-//            }
-//        }
-//    }
-//}
-
-//extension Object {
-//    public func repeatingForever(body: @escaping () -> Void, delay: CGFloat = 1) {
-//        DispatchQueue.ma
-//    }
-//}
+// MARK: - Rendering of objects into SCNNode.
 
 extension Object {
     public var scnNode: SCNNode {
@@ -69,8 +27,8 @@ extension Object {
         _ = render.1.compactMap {
             switch $0 {
             case .onAppear(let function):
-                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 0.5 seconds after this
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // please don't judge me i didn't have the time to implement this properly and i'm assuming it would have appeared at least 0.8 seconds after this
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                     function()
                 }
             default:
@@ -88,36 +46,9 @@ extension Object {
         changedAttributes.append(contentsOf: render.1)
         return (node, changedAttributes)
     }
-    
-    public func applyAttributes(to node: inout SCNNode) -> [Attributes] {
-        var changedAttributes: [Attributes] = []
-        
-        if let color = color {
-            changedAttributes.append(.color)
-            node.geometry?.firstMaterial?.diffuse.contents = UIColor(color)
-        }
-        
-        if let offset = offset {
-            changedAttributes.append(.offset)
-            node.position.x = node.position.x + offset.x
-            node.position.y = node.position.y + offset.y
-            node.position.z = node.position.z + offset.z
-        }
-        
-        if let opacity = opacity {
-            changedAttributes.append(.opacity)
-            node.opacity = opacity
-        }
-        
-        if let onAppear = onAppear {
-            changedAttributes.append(.onAppear(onAppear))
-        }
-        
-        node.name = id
-        
-        return changedAttributes
-    }
 }
+
+// MARK: - Bind properties of @State3D to scene update method.
 
 extension Object {
     func bindProperties(_ update: @escaping () -> Void) {
@@ -129,6 +60,8 @@ extension Object {
         }
     }
 }
+
+// MARK: - Search for child object with id.
 
 extension Object {
     func childWithId(id: String) -> Object? {
@@ -148,11 +81,34 @@ extension Object {
                 array.append(array.last!.object)
             }
             timeout += 1
-            if timeout > 1000 {
+            if timeout > 500 {
                 print("too many objects to search")
                 return nil
             }
         }
         return array.first { $0.id == id }
+    }
+}
+
+// MARK: - Getter for id.
+
+extension Object {
+    public var id: String {
+        if self is Stack || object is Stack {
+            let stack = self as? Stack ?? self.object as! Stack
+            var base = "Stack,\(stack.xyz.rawValue),\(stack.spacing ?? 0),"
+            if color != nil || object.color != nil { base.append("color") }
+            if offset != nil || object.offset != nil { base.append("offset") }
+            if opacity != nil || object.opacity != nil { base.append("opacity") }
+            if rotation != nil || object.rotation != nil { base.append("rotation") }
+            return base + ",\(String(format: "%04d", index))"
+        } else {
+            var base = "\(type(of: self)),"
+            if color != nil || object.color != nil { base.append("color") }
+            if offset != nil || object.offset != nil { base.append("offset") }
+            if opacity != nil || object.opacity != nil { base.append("opacity") }
+            if rotation != nil || object.rotation != nil { base.append("rotation") }
+            return base + ",\(String(format: "%04d", index))"
+        }
     }
 }

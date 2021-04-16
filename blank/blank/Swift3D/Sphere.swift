@@ -9,14 +9,14 @@ import SceneKit
 import Combine
 
 public struct Sphere: Object {
-    public var subject = PassthroughSubject<UUID, Never>()
+    public init(radius: CGFloat = 0.5) {
+        self.radius = radius
+    }
     
     public var object: Object { self }
-    
     public var attributes = ObjectAttributes()
     
     private let radius: CGFloat
-    public init(radius: CGFloat = 0.5) { self.radius = radius }
 }
 
 extension Sphere {

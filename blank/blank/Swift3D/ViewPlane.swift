@@ -9,16 +9,6 @@ import SceneKit
 import SwiftUI
 
 public struct ViewPlane<Content>: Object where Content: View {
-    public var object: Object { self }
-    
-    public var attributes = ObjectAttributes()
-    
-    private let size: CGSize
-    private var doubleSided: Bool
-    private var vertical: Bool
-    private var cornerRadius: CGFloat
-    private var body: Content
-    
     public init(size: CGSize = .init(width: 10, height: 10), doubleSided: Bool = true, vertical: Bool = false, cornerRadius: CGFloat = 0, @ViewBuilder body: () -> Content) {
         self.size = size
         self.doubleSided = doubleSided
@@ -34,6 +24,15 @@ public struct ViewPlane<Content>: Object where Content: View {
         self.cornerRadius = cornerRadius
         self.body = body
     }
+    
+    public var object: Object { self }
+    public var attributes = ObjectAttributes()
+    
+    private let size: CGSize
+    private var doubleSided: Bool
+    private var vertical: Bool
+    private var cornerRadius: CGFloat
+    private var body: Content
 }
 
 extension ViewPlane {

@@ -94,7 +94,7 @@ struct TwoDInThreeD: Object {
 
 struct ContentView: View {
     var body: some View {
-        ARScene3D(baseObject: TwoDInThreeD())
+        ARScene(baseObject: Box())
             //.backgroundColor(.blue)
     }
 }

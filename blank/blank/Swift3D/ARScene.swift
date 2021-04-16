@@ -1,25 +1,25 @@
 //
-//  Scene.swift
-//  testingmy3dthing
+//  ARScene.swift
+//  blank
 //
-//  Created by Christian Privitelli on 11/4/21.
+//  Created by Christian Privitelli on 16/4/21.
 //
 
 import SwiftUI
-import SceneKit
+import ARKit
 
-public struct Scene3D: View {
+public struct ARScene3D: View {
     public var body: some View {
-        SceneView(scene: scene, pointOfView: camera, options: [.allowsCameraControl, .autoenablesDefaultLighting])
+        ARContainerView(arView: arView)
     }
     
-    private var scene: SCNScene
-    
-    private var camera: SCNNode
+    private var arView: ARSCNView
+    private var delegate = Delegator()
     private var baseObject: Object
+    var hasAddedBaseObject = false
     
     private func update() {
-        scene.rootNode.enumerateChildNodes { node, stop in
+        arView.scene.rootNode.enumerateChildNodes { node, stop in
             if let name = node.name,
                let object = baseObject.childWithId(id: name) {
                 let child = object.object
@@ -163,46 +163,55 @@ public struct Scene3D: View {
     }
     
     public init(baseObject: Object) {
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
+        let arView = ARSCNView(frame: .init(x: 1, y: 1, width: 1, height: 1))
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = .horizontal
+        arView.autoenablesDefaultLighting = true
+        arView.automaticallyUpdatesLighting = true
+        arView.session.run(config)
+        arView.debugOptions = [.showFeaturePoints]
         
-        let scene = SCNScene()
-        scene.rootNode.addChildNode(cameraNode)
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
-        scene.rootNode.addChildNode(baseObject.scnNode)
-        
-        self.scene = scene
-        self.camera = cameraNode
+        self.arView = arView
         self.baseObject = baseObject
         self.baseObject.bindProperties(update)
     }
     
-    fileprivate init(
-        baseObject: Object,
-        backgroundColor: Color? = nil,
-        backgroundImage: UIImage? = nil
-    ) {
-        self.init(baseObject: baseObject)
-        
-        if let backgroundColor = backgroundColor {
-            scene.background.contents = UIColor(backgroundColor)
-        }
-        
-        if let backgroundImage = backgroundImage {
-            scene.background.contents = backgroundImage
-        }
-    }
+    
 }
 
-extension Scene3D {
-    public func backgroundColor(_ color: Color) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundColor: color)
+public struct ARScene: UIViewRepresentable {
+    
+    private var baseObject: Object
+    private var arView: ARSCNView
+    
+    public init(baseObject: Object) {
+        let arView = ARSCNView(frame: .init(x: 1, y: 1, width: 1, height: 1))
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = .horizontal
+        arView.autoenablesDefaultLighting = true
+        arView.automaticallyUpdatesLighting = true
+        arView.session.run(config)
+        arView.debugOptions = [.showFeaturePoints]
+        
+        self.arView = arView
+        self.baseObject = baseObject
+        //self.baseObject.bindProperties(update)
     }
-}
-
-extension Scene3D {
-    public func backgroundImage(_ image: UIImage) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundImage: image)
+    
+    public func makeUIView(context: Context) -> ARSCNView {
+        return arView
+    }
+    
+    public func updateUIView(_ uiView: ARSCNView, context: Context) { }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    public class Coordinator: NSObject, ARSCNViewDelegate {
+        var parent: ARScene
+        init(_ arScene: ARScene) {
+            self.parent = arScene
+        }
     }
 }

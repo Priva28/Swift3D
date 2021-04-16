@@ -26,6 +26,8 @@
 		309EAAF52621EB4B009972FE /* Sphere.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE82621EB4A009972FE /* Sphere.swift */; };
 		309EAAF62621EB4B009972FE /* ObjectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAE92621EB4A009972FE /* ObjectBuilder.swift */; };
 		309EAAF72621EB4B009972FE /* EmptyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EAAEA2621EB4A009972FE /* EmptyObject.swift */; };
+		AA55920126293AC90051205C /* ARScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA55920026293AC90051205C /* ARScene.swift */; };
+		AA55920326293B6E0051205C /* ARContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA55920226293B6E0051205C /* ARContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		309EAAE82621EB4A009972FE /* Sphere.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sphere.swift; sourceTree = "<group>"; };
 		309EAAE92621EB4A009972FE /* ObjectBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectBuilder.swift; sourceTree = "<group>"; };
 		309EAAEA2621EB4A009972FE /* EmptyObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyObject.swift; sourceTree = "<group>"; };
+		AA55920026293AC90051205C /* ARScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARScene.swift; sourceTree = "<group>"; };
+		AA55920226293B6E0051205C /* ARContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +116,8 @@
 				309EAAE92621EB4A009972FE /* ObjectBuilder.swift */,
 				309EAADF2621EB49009972FE /* Pyramid.swift */,
 				309EAADE2621EB49009972FE /* Scene.swift */,
+				AA55920026293AC90051205C /* ARScene.swift */,
+				AA55920226293B6E0051205C /* ARContainerView.swift */,
 				309EAAE82621EB4A009972FE /* Sphere.swift */,
 				309EAAE72621EB4A009972FE /* Stack.swift */,
 				309EAAE52621EB4A009972FE /* State3D.swift */,
@@ -196,6 +202,8 @@
 				309EAAF22621EB4A009972FE /* State3D.swift in Sources */,
 				302142EB26274655006955A5 /* Animation3D.swift in Sources */,
 				309EAAD22621EB2A009972FE /* ContentView.swift in Sources */,
+				AA55920326293B6E0051205C /* ARContainerView.swift in Sources */,
+				AA55920126293AC90051205C /* ARScene.swift in Sources */,
 				309EAAEF2621EB4A009972FE /* Box.swift in Sources */,
 				309EAAF42621EB4B009972FE /* Stack.swift in Sources */,
 				309EAAF32621EB4A009972FE /* Helpers.swift in Sources */,

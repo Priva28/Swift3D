@@ -34,3 +34,20 @@ public struct Location3D {
         return Location3D(x: 0, y: 0, z: 0)
     }
 }
+
+extension SCNActionTimingMode {
+    func caMediaTimingFunction() -> CAMediaTimingFunction {
+        switch self {
+        case .easeIn:
+            return CAMediaTimingFunction(name: .easeIn)
+        case .easeInEaseOut:
+            return CAMediaTimingFunction(name: .easeInEaseOut)
+        case .easeOut:
+            return CAMediaTimingFunction(name: .easeOut)
+        case .linear:
+            return CAMediaTimingFunction(name: .linear)
+        default:
+            return CAMediaTimingFunction(name: .linear)
+        }
+    }
+}

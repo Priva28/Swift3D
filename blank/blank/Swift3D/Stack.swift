@@ -7,7 +7,6 @@
 
 import SwiftUI
 import SceneKit
-import Combine
 
 public struct Stack: Object {
     public init(_ xyz: XYZ, spacing: Float? = nil, @ObjectBuilder content: () -> [Object]) {

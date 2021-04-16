@@ -6,7 +6,6 @@
 //
 
 import SceneKit
-import Combine
 
 public struct Pyramid: Object {
     public init(size: Size3D = Size3D(width: 1, height: 1, length: 1)) {
@@ -21,9 +20,12 @@ public struct Pyramid: Object {
 
 extension Pyramid {
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        var node = SCNNode(geometry: SCNPyramid(width: size.width, height: size.height, length: size.length))
-        
+        let pyramid = SCNPyramid(width: size.width, height: size.height, length: size.length)
+        var node = SCNNode(geometry: pyramid)
+        node.position.y = -node.boundingBox.max.y/2
+        let containerNode = SCNNode()
+        containerNode.addChildNode(node)
         let changedAttributes = applyAttributes(to: &node)
-        return (node, changedAttributes)
+        return (containerNode, changedAttributes)
     }
 }

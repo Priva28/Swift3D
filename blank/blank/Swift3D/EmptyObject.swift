@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 
 public struct EmptyObject: Object {
     public init() { }

@@ -6,7 +6,6 @@
 //
 
 import SceneKit
-import Combine
 
 public struct Box: Object {
     public init(size: Size3D = .init(width: 1, height: 1, length: 1), chamferRadius: CGFloat = 0) {
@@ -23,7 +22,8 @@ public struct Box: Object {
 
 extension Box {
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        var node = SCNNode(geometry: SCNBox(width: size.width, height: size.height, length: size.length, chamferRadius: chamferRadius))
+        let box = SCNBox(width: size.width, height: size.height, length: size.length, chamferRadius: chamferRadius)
+        var node = SCNNode(geometry: box)
         let changedAttributes = applyAttributes(to: &node)
         return (node, changedAttributes)
     }

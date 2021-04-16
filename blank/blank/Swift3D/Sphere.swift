@@ -6,7 +6,6 @@
 //
 
 import SceneKit
-import Combine
 
 public struct Sphere: Object {
     public init(radius: CGFloat = 0.5) {
@@ -21,7 +20,8 @@ public struct Sphere: Object {
 
 extension Sphere {
     public func renderScnNode() -> (SCNNode, [Attributes]) {
-        var node = SCNNode(geometry: SCNSphere(radius: radius))
+        let sphere = SCNSphere(radius: radius)
+        var node = SCNNode(geometry: sphere)
         let changedAttributes = applyAttributes(to: &node)
         return (node, changedAttributes)
     }

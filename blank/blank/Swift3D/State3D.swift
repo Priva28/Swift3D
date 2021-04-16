@@ -5,7 +5,6 @@
 //  Created by Christian Privitelli on 4/4/21.
 //
 
-import Foundation
 import SwiftUI
 
 @propertyWrapper public class State3D<Value>: DynamicProperty3D {

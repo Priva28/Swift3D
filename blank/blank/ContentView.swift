@@ -37,15 +37,16 @@ struct obj2: Object {
     @State3D var test2 = false
     var attributes: ObjectAttributes = ObjectAttributes()
     var object: Object {
-        Stack(.y) {
+        Stack(.x) {
             Box()
-                .color(.red)
             Sphere()
-                //.opacity(test2 ? 1 : 0.5)
-//                .animation(Animation3D.easeIn(duration: 5))
-//                .onAppear {
-//                    test2 = true
-//                }
+            Pyramid()
+            Capsule()
+            Cone()
+            Cylinder()
+            Torus()
+            Tube()
+            Plane()
         }
     }
 }
@@ -99,7 +100,7 @@ struct TwoDInThreeD: Object {
 
 struct ContentView: View {
     var body: some View {
-        Scene3D(baseObject: obj3())
+        Scene3D(baseObject: obj2())
             .backgroundColor(.blue)
     }
 }

@@ -1,25 +1,49 @@
 //
-//  Scene.swift
-//  testingmy3dthing
+//  ARScene.swift
+//  blank
 //
-//  Created by Christian Privitelli on 11/4/21.
+//  Created by Christian Privitelli on 16/4/21.
 //
 
 import SwiftUI
-import SceneKit
+import ARKit
 
-public struct Scene3D: View {
-    public var body: some View {
-        SceneView(scene: scene, pointOfView: camera, options: [.allowsCameraControl, .jitteringEnabled])
+public struct ARScene3D: UIViewRepresentable {
+    
+    private var baseObject: Object
+    private var arView: ARSCNView
+    private var coachingOverlay: ARCoachingOverlayView
+    
+    public init(baseObject: Object) {
+        // MARK: - Setup AR View
+        
+        arView = ARSCNView(frame: .init(x: 1, y: 1, width: 1, height: 1))
+        let config = ARWorldTrackingConfiguration()
+        config.planeDetection = .horizontal
+        config.environmentTexturing = .automatic
+        arView.autoenablesDefaultLighting = false
+        arView.automaticallyUpdatesLighting = true
+        
+        arView.session.run(config)
+        
+        // MARK: - Setup Coaching Overlay
+        
+        coachingOverlay = ARCoachingOverlayView()
+        coachingOverlay.autoresizingMask = [
+          .flexibleWidth, .flexibleHeight
+        ]
+        coachingOverlay.goal = .horizontalPlane
+        coachingOverlay.session = arView.session
+        arView.addSubview(coachingOverlay)
+        
+        // MARK: - Setup Base Object
+        
+        self.baseObject = baseObject
+        self.baseObject.bindProperties(update)
     }
     
-    private var scene: SCNScene
-    
-    private var camera: SCNNode
-    private var baseObject: Object
-    
     private func update() {
-        scene.rootNode.enumerateChildNodes { node, stop in
+        arView.scene.rootNode.enumerateChildNodes { node, stop in
             if let name = node.name,
                let object = baseObject.childWithId(id: name) {
                 let child = object.object
@@ -162,80 +186,116 @@ public struct Scene3D: View {
         }
     }
     
-    public init(baseObject: Object) {
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
+    public func makeUIView(context: Context) -> ARSCNView {
+        coachingOverlay.delegate = context.coordinator
+        arView.delegate = context.coordinator
         
-        let scene = SCNScene()
-        scene.rootNode.addChildNode(cameraNode)
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
-        
-        let ambientLight = SCNLight()
-        ambientLight.type = .ambient
-        ambientLight.color = UIColor.white
-        ambientLight.intensity = 2000
-        ambientLight.categoryBitMask = -1
-        
-        let directionalLight = SCNLight()
-        directionalLight.type = .directional
-        directionalLight.castsShadow = true
-        directionalLight.color = UIColor.white
-        directionalLight.automaticallyAdjustsShadowProjection = true
-        directionalLight.shadowColor = UIColor.black.withAlphaComponent(0.5)
-        directionalLight.shadowMode = .deferred
-        directionalLight.shadowRadius = 8
-        directionalLight.zNear = 0
-        directionalLight.zFar = 50
-        directionalLight.shadowSampleCount = 32
-        directionalLight.shadowMapSize = CGSize(width: 4096, height: 4096)
-        directionalLight.categoryBitMask = -1
-        
-        let directionalLightNode = SCNNode()
-        directionalLightNode.light = directionalLight
-        directionalLightNode.position = SCNVector3(x: 0, y: 15, z: 0)
-        directionalLightNode.eulerAngles = SCNVector3(deg2rad(-88), 0, deg2rad(-2))
-        
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = ambientLight
-        ambientLightNode.position = SCNVector3(x: 0, y: 5, z: 0)
-        
-        scene.rootNode.addChildNode(ambientLightNode)
-        scene.rootNode.addChildNode(directionalLightNode)
-        
-        scene.rootNode.addChildNode(baseObject.scnNode)
-        
-        self.scene = scene
-        self.camera = cameraNode
-        self.baseObject = baseObject
-        self.baseObject.bindProperties(update)
+        return arView
     }
     
-    fileprivate init(
-        baseObject: Object,
-        backgroundColor: Color? = nil,
-        backgroundImage: UIImage? = nil
-    ) {
-        self.init(baseObject: baseObject)
-        
-        if let backgroundColor = backgroundColor {
-            scene.background.contents = UIColor(backgroundColor)
+    public func updateUIView(_ uiView: ARSCNView, context: Context) { }
+    
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    public class Coordinator: NSObject, ARSCNViewDelegate, ARCoachingOverlayViewDelegate {
+        var parent: ARScene3D
+        var arView: ARSCNView {
+            return parent.arView
+        }
+        var raycastFirstResult: ARRaycastResult!
+        init(_ arScene: ARScene3D) {
+            self.parent = arScene
         }
         
-        if let backgroundImage = backgroundImage {
-            scene.background.contents = backgroundImage
+        public func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.planeDetection = [.horizontal]
+            _ = arView.scene.rootNode.childNodes.map { $0.removeFromParentNode() }
+            coachingOverlayView.session?.run(configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction, .stopTrackedRaycasts])
+        }
+        
+        public func coachingOverlayViewDidRequestSessionReset(_ coachingOverlayView: ARCoachingOverlayView) {
+            let configuration = ARWorldTrackingConfiguration()
+            configuration.planeDetection = [.horizontal]
+            _ = arView.scene.rootNode.childNodes.map { $0.removeFromParentNode() }
+            coachingOverlayView.session?.run(configuration, options: [.resetTracking, .removeExistingAnchors, .resetSceneReconstruction, .stopTrackedRaycasts])
+        }
+        
+        public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+            let screenCenter = arView.screenCenter
+            guard let query = arView.raycastQuery(from: screenCenter, allowing: .existingPlaneInfinite, alignment: .horizontal) else { return }
+            let raycastResults = arView.session.raycast(query)
+            if raycastResults.isEmpty {
+                print("FAIL")
+            } else if let result = raycastResults.first {
+                let anchor = ARAnchor(name: "BaseObjectAnchor", transform: result.worldTransform)
+                raycastFirstResult = result
+                parent.arView.session.add(anchor: anchor)
+            }
+        }
+        
+        public func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+            if anchor.name == "BaseObjectAnchor" {
+                let rotate = simd_float4x4(SCNMatrix4MakeRotation(arView.session.currentFrame!.camera.eulerAngles.y, 0, 1, 0))
+                let rotateTransform = simd_mul(raycastFirstResult.worldTransform, rotate)
+                node.transform = SCNMatrix4(rotateTransform)
+                
+                let plane = SCNPlane(width: 2, height: 2)
+                plane.heightSegmentCount = 1
+                plane.widthSegmentCount = 1
+                
+                let ambientLight = SCNLight()
+                ambientLight.type = .ambient
+                ambientLight.color = UIColor.white
+                ambientLight.intensity = 1000
+                ambientLight.categoryBitMask = -1
+                
+                let directionalLight = SCNLight()
+                directionalLight.type = .directional
+                directionalLight.castsShadow = true
+                directionalLight.color = UIColor.white
+                directionalLight.automaticallyAdjustsShadowProjection = true
+                directionalLight.shadowColor = UIColor.black.withAlphaComponent(0.65)
+                directionalLight.shadowMode = .deferred
+                directionalLight.shadowRadius = 8
+                directionalLight.zNear = 0
+                directionalLight.zFar = 50
+                directionalLight.shadowSampleCount = 24
+                directionalLight.shadowMapSize = CGSize(width: 4096, height: 4096)
+                directionalLight.categoryBitMask = -1
+                
+                let planeNode = SCNNode(geometry: plane)
+                planeNode.renderingOrder = -10
+                planeNode.castsShadow = false
+                planeNode.geometry?.firstMaterial?.diffuse.contents = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+                planeNode.geometry?.firstMaterial?.colorBufferWriteMask = SCNColorMask(rawValue: 0)
+                planeNode.geometry?.firstMaterial?.lightingModel = .physicallyBased
+                planeNode.geometry?.firstMaterial?.isDoubleSided = true
+                planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
+                
+                let directionalLightNode = SCNNode()
+                directionalLightNode.light = directionalLight
+                directionalLightNode.position = SCNVector3(x: 0, y: 10, z: 0)
+                directionalLightNode.eulerAngles = SCNVector3(deg2rad(-88), 0, deg2rad(-10))
+                
+                let ambientLightNode = SCNNode()
+                ambientLightNode.light = ambientLight
+                ambientLightNode.position = SCNVector3(x: 0, y: 5, z: 0)
+                
+                let baseObject = parent.baseObject.scnNode
+                let baseNodeContainer = SCNNode()
+                baseNodeContainer.addChildNode(baseObject)
+                baseNodeContainer.scale = SCNVector3(0.1, 0.1, 0.1)
+                baseNodeContainer.position.y = (baseObject.boundingBox.max.y*0.1)
+                
+                node.addChildNode(ambientLightNode)
+                node.addChildNode(directionalLightNode)
+                node.addChildNode(baseNodeContainer)
+                node.addChildNode(planeNode)
+            }
         }
     }
 }
 
-extension Scene3D {
-    public func backgroundColor(_ color: Color) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundColor: color)
-    }
-}
-
-extension Scene3D {
-    public func backgroundImage(_ image: UIImage) -> some View {
-        return Scene3D(baseObject: self.baseObject, backgroundImage: image)
-    }
-}

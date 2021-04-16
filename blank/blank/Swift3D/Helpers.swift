@@ -5,7 +5,7 @@
 //  Created by Christian Privitelli on 4/4/21.
 //
 
-import SceneKit
+import ARKit
 
 public struct Size3D {
     public init(width: CGFloat, height: CGFloat, length: CGFloat) {
@@ -97,4 +97,14 @@ extension CGPoint {
     var length: CGFloat {
         return sqrt(x * x + y * y)
     }
+}
+
+extension ARSCNView {
+    var screenCenter: CGPoint {
+        return CGPoint(x: bounds.midX, y: bounds.midY)
+    }
+}
+
+func deg2rad(_ number: Float) -> Float {
+    return number * .pi / 180
 }

@@ -47,14 +47,11 @@ extension Stack {
             case .x:
                 childNode.position.x += xTranslation
             case .y:
-//                print(parentNode.boundingBox.max)
-//                print(childNode.boundingBox.max)
                 childNode.position.y += yTranslation
             case .z:
                 childNode.position.z += zTranslation
             }
             parentNode.addChildNode(childNode)
-            //print(parentNode.boundingBox.max)
         }
         return parentNode
     }

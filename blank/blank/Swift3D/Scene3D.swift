@@ -10,7 +10,7 @@ import SceneKit
 
 public struct Scene3D: View, Scene3DProtocol {
     
-    public init(baseObject: Object) {
+    public init(baseObject: Object, realisticLighting: Bool = true) {
         // Setup camera and scene.
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
@@ -22,20 +22,26 @@ public struct Scene3D: View, Scene3DProtocol {
         // Initialise properties.
         self.scene = scene
         self.camera = cameraNode
+        self.realisticLighting = realisticLighting
         self.baseObject = baseObject
         self.baseObject.bindProperties(update)
         
         // Add lighting and objects to scene.
-        scene.rootNode.addChildNode(ambientLight)
-        scene.rootNode.addChildNode(directionalLight)
+        if self.realisticLighting {
+            scene.rootNode.addChildNode(ambientLight)
+            scene.rootNode.addChildNode(directionalLight)
+        }
         scene.rootNode.addChildNode(baseObject.scnNode)
     }
     
     public var body: some View {
-        SceneView(scene: scene, pointOfView: camera, options: [.allowsCameraControl, .jitteringEnabled])
+        var defaultOptions: SceneView.Options = [.allowsCameraControl, .jitteringEnabled]
+        if !realisticLighting { defaultOptions.insert(.autoenablesDefaultLighting) }
+        return SceneView(scene: scene, pointOfView: camera, options: defaultOptions)
     }
     
     internal var scene: SCNScene
+    internal var realisticLighting: Bool
     internal var baseObject: Object
     private var camera: SCNNode
     

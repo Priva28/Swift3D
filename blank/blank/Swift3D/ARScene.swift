@@ -9,7 +9,8 @@ import SwiftUI
 import ARKit
 
 public struct ARScene3D: UIViewRepresentable, Scene3DProtocol {
-    public init(baseObject: Object) {
+    public init(baseObject: Object, realisticLighting: Bool = true) {
+        self.realisticLighting = realisticLighting
         self.baseObject = baseObject
         
         // Setup AR view.
@@ -27,8 +28,9 @@ public struct ARScene3D: UIViewRepresentable, Scene3DProtocol {
         return arView
     }
     
-    internal var baseObject: Object
     internal var scene: SCNScene { arView.scene }
+    internal var realisticLighting: Bool
+    internal var baseObject: Object
     private var arView: ARSCNView
     private var coachingOverlay: ARCoachingOverlayView
     
@@ -36,8 +38,8 @@ public struct ARScene3D: UIViewRepresentable, Scene3DProtocol {
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = .horizontal
         config.environmentTexturing = .automatic
-        arView.autoenablesDefaultLighting = false
-        arView.automaticallyUpdatesLighting = false
+        arView.autoenablesDefaultLighting = !realisticLighting
+        arView.automaticallyUpdatesLighting = !realisticLighting
         arView.session.run(config)
     }
     
@@ -141,8 +143,10 @@ extension ARScene3D {
                 arView.prepare(
                     [baseNodeContainer, planeNode, ambientLightNode, directionalLightNode]
                 ) { _ in
-                    node.addChildNode(ambientLightNode)
-                    node.addChildNode(directionalLightNode)
+                    if self.parent.realisticLighting {
+                        node.addChildNode(ambientLightNode)
+                        node.addChildNode(directionalLightNode)
+                    }
                     node.addChildNode(baseNodeContainer)
                     node.addChildNode(planeNode)
                 }

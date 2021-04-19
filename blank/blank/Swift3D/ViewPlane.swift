@@ -44,6 +44,7 @@ extension ViewPlane {
         if !vertical {
             node.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
         }
+        
         let changedAttributes = applyAttributes(to: &node)
         
         DispatchQueue.main.async {
@@ -58,7 +59,10 @@ extension ViewPlane {
             node.geometry?.materials.first?.isDoubleSided = doubleSided
         }
         
-        return (node, changedAttributes)
+        let containerNode = SCNNode()
+        containerNode.addChildNode(node)
+        
+        return (containerNode, changedAttributes)
     }
     
     private func viewToImage(view: UIView) -> UIImage {

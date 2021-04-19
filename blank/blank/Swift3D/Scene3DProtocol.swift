@@ -11,6 +11,7 @@ internal protocol Scene3DProtocol {
     var scene: SCNScene { get }
     var baseObject: Object { get set }
     
+    var realisticLighting: Bool { get }
     var ambientLight: SCNNode { get }
     var directionalLight: SCNNode { get }
     func update()
@@ -120,31 +121,42 @@ extension Scene3DProtocol {
     
                         let xyz = XYZ(rawValue: stackProperties[1])!
                         let spacing = Float(stackProperties[2]) ?? 0
-                        let index = Int(name.suffix(4))
+                        let index = Int(name.suffix(4))!
                         
                         var totalWidth: Float = 0
-                        for stackChild in parentNode.childNodes {
-                            totalWidth += stackChild.geometry?.boundingBox.max.x ?? stackChild.boundingBox.max.x/2
+                        for childIndex in 0...index {
+                            if childIndex != 0 {
+                                totalWidth += parentNode.childNodes[childIndex-1].boundingBox.max.x
+                                totalWidth += parentNode.childNodes[childIndex].boundingBox.max.x
+                            }
                         }
                         
                         var totalHeight: Float = 0
-                        for stackChild in parentNode.childNodes {
-                            totalHeight += stackChild.geometry?.boundingBox.max.y ?? stackChild.boundingBox.max.y/2
+                        for childIndex in 0...index {
+                            if childIndex != 0 {
+                                totalHeight += parentNode.childNodes[childIndex-1].boundingBox.max.y
+                                totalHeight += parentNode.childNodes[childIndex].boundingBox.max.y
+                            }
                         }
                         
                         var totalLength: Float = 0
-                        for stackChild in parentNode.childNodes {
-                            totalLength += stackChild.geometry?.boundingBox.max.z ?? stackChild.boundingBox.max.z/2
+                        for childIndex in 0...index {
+                            if childIndex != 0 {
+                                totalLength += parentNode.childNodes[childIndex-1].boundingBox.max.z
+                                totalLength += parentNode.childNodes[childIndex].boundingBox.max.z
+                            }
                         }
                         
-                        let xTranslation = index == 0 ? 0 : totalWidth + ((spacing)*Float(parentNode.childNodes.count-1))
-                        let yTranslation = index == 0 ? 0 : totalHeight + ((spacing)*Float(parentNode.childNodes.count-1))
-                        let zTranslation = index == 0 ? 0 : totalLength + ((spacing)*Float(parentNode.childNodes.count-1))
+                        print("calc: \(totalWidth)")
+                        print(node.position.x)
+                        let xTranslation = totalWidth + ((spacing)*Float(parentNode.childNodes.count-1))
+                        let yTranslation = totalHeight + ((spacing)*Float(parentNode.childNodes.count-1))
+                        let zTranslation = totalLength + ((spacing)*Float(parentNode.childNodes.count-1))
                         
                         switch xyz {
                         case .x:
                             newVector = SCNVector3(
-                                x: xTranslation + newOffset.x - node.position.x,
+                                x: xTranslation - node.position.x,
                                 y: newOffset.y - node.position.y,
                                 z: newOffset.z - node.position.z
                             )

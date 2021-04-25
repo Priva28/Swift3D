@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ImageReference</key>
+	<string>iconnew.png</string>
+	<key>Chapters</key>
+	<array>
+		<string>Introduction.playgroundchapter</string>
+		<string>The Basics.playgroundchapter</string>
+		<string>Creating Something.playgroundchapter</string>
+		<string>Conclusion.playgroundchapter</string>
+	</array>
+	<key>ContentIdentifier</key>
+	<string>com.apple.playgrounds.blank</string>
+	<key>ContentVersion</key>
+	<string>1.0</string>
+	<key>DeploymentTarget</key>
+	<string>ios-current</string>
+	<key>DevelopmentRegion</key>
+	<string>en</string>
+	<key>SwiftVersion</key>
+	<string>5.3</string>
+	<key>Version</key>
+	<string>8.0</string>
+	<key>UserAutoImportedAuxiliaryModules</key>
+	<array/>
+	<key>UserModuleMode</key>
+	<string>Full</string>
+</dict>
+</plist>

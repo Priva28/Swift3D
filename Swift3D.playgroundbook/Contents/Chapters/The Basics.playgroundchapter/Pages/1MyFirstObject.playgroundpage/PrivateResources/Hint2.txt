@@ -1,0 +1,3 @@
+Sphere supports setting a custom radius to change its size. Try something like this:
+
+`Sphere(radius: 0.85)`

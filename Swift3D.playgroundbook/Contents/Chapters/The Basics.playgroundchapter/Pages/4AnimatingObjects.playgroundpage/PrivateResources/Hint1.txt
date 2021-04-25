@@ -1,0 +1,4 @@
+You can change the animation to use whatever animation curve/duration you like.
+Try something like this:
+
+`.animation(.linear(duration: 2.3))`

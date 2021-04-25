@@ -1,0 +1,3 @@
+Plane supports setting a custom size, if it should be vertical, if it should be rendered on both sides and a corner radius. Try something like this and see how it affects the resulting plane:
+
+`Plane(size: .init(width: 12, length: 12), vertical: false, doubleSided: false, cornerRadius: 1)`

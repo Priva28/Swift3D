@@ -1,0 +1,4 @@
+You can set an animation to run forever!
+Try something like this:
+
+`.animation(Animation3D.easeOut.repeatForever())`

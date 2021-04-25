@@ -1,0 +1,4 @@
+Box supports setting a custom size and chamfer radius.
+Try something like this:
+
+`Box(size: .init(width: 1, height: 2, length: 2), chamferRadius: 0.15)`

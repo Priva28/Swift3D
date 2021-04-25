@@ -1,0 +1,3 @@
+Pyramid supports setting a custom size. Try something like this:
+
+`Pyramid(size: .init(width: 3, height: 0.5, length: 2))`
